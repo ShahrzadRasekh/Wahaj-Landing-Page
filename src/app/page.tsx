@@ -80,7 +80,7 @@ export default function Page() {
     };
   }, []);
 
-  // Background mouse trail (slightly bigger stars)
+  // Background mouse trail
   useEffect(() => {
     const wrap = trailRef.current;
     if (!wrap) return;
@@ -98,8 +98,7 @@ export default function Page() {
       dot.style.left = `${x + jitterX}px`;
       dot.style.top = `${y + jitterY}px`;
 
-      // Bigger than before
-      const size = 2 + Math.random() * 3.2; // 2px–5.2px
+      const size = 2 + Math.random() * 3.2;
       dot.style.width = `${size}px`;
       dot.style.height = `${size}px`;
 
@@ -112,13 +111,17 @@ export default function Page() {
 
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
-      if (now - last < 22) return;
+      const isMobile = window.matchMedia("(max-width: 640px)").matches;
+const throttle = isMobile ? 45 : 22;
+if (now - last < throttle) return;
+
       last = now;
 
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         spawn(e.clientX, e.clientY);
-        if (Math.random() > 0.55) spawn(e.clientX, e.clientY);
+        const isMobile2 = window.matchMedia("(max-width: 640px)").matches;
+if (!isMobile2 && Math.random() > 0.55) spawn(e.clientX, e.clientY);
       });
     };
 
@@ -135,14 +138,13 @@ export default function Page() {
     toastTimer.current = window.setTimeout(() => setToast(null), 2600);
   }
 
-  // ✅ UPDATED: sends email to /api/lead (Vercel backend) instead of localStorage
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmitting) return;
 
     const trimmed = email.trim().toLowerCase();
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
     if (!ok) return showToast("Please enter a valid email address.");
-    if (isSubmitting) return;
 
     setIsSubmitting(true);
 
@@ -153,21 +155,17 @@ export default function Page() {
         body: JSON.stringify({ email: trimmed }),
       });
 
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => null);
 
-      if (!res.ok) {
-        if (data?.error === "INVALID_EMAIL") {
-          showToast("Please enter a valid email address.");
-        } else {
-          showToast("Something went wrong. Please try again.");
-        }
+      if (!res.ok || !data?.ok) {
+        showToast(data?.details || data?.error || "Something went wrong. Please try again.");
         return;
       }
 
       setEmail("");
       showToast("You’re on the list. We’ll notify you at launch.");
     } catch {
-      showToast("Network error. Please try again.");
+      showToast("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -188,7 +186,6 @@ export default function Page() {
 
       <div ref={trailRef} className="trailLayer" aria-hidden="true" />
 
-      {/* Topbar: logo only (bigger, no border box) */}
       <header className="topbar topbarSimple">
         <div className="brand introLine">
           <Image
@@ -206,12 +203,10 @@ export default function Page() {
         <div className="heroShell heroShellNoBorder">
           <div className="heroGrid">
             <div className="heroLeft">
-              {/* LAUNCHING SOON centered, one line */}
               <div className="launchingTopCenter introLine introDelay1">
                 LAUNCHING SOON
               </div>
 
-              {/* Email box moved directly under LAUNCHING SOON */}
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
                 <div className="ctaTitle">Be notified when Wahaj launches.</div>
 
@@ -237,7 +232,6 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Paragraphs moved under the email section */}
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
                   A new platform for buying{" "}

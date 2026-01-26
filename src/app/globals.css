@@ -792,3 +792,584 @@ button, input{ font: inherit; }
     0 0 12px rgba(188,168,128,.42),
     0 0 26px rgba(188,168,128,.22) !important;
 }
+
+/* =========================
+   Mobile Refinements (Wahaj)
+   Paste at END of globals.css
+========================= */
+
+/* Ensure no horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Main page spacing */
+.page {
+  min-height: 100svh;
+}
+
+/* HERO container: reduce padding on small screens */
+.heroShell {
+  padding: 28px 16px;
+}
+
+/* If you have a max width wrapper, keep it centered */
+.heroShellNoBorder {
+  border: none !important;
+}
+
+/* Topbar logo scaling */
+.logoNoBox {
+  display: block;
+  height: auto;
+  width: auto;
+  max-width: 220px;
+}
+
+/* Typography tweaks for better mobile readability */
+.launchingTopCenter {
+  text-align: left;
+}
+
+/* Make paragraphs breathe more on mobile */
+.copyGroup {
+  margin-top: 16px;
+}
+.copyP {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+/* CTA panel spacing */
+.ctaPanelTop {
+  margin-top: 14px;
+}
+
+/* Email form should be responsive */
+.notify {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Inputs should not overflow */
+.input {
+  min-width: 0;
+}
+
+/* =========================
+   Responsive breakpoints
+========================= */
+
+@media (max-width: 980px) {
+  /* Stack the grid instead of side-by-side */
+  .heroGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* Put product block under text */
+  .heroRight {
+    order: 2;
+  }
+  .heroLeft {
+    order: 1;
+  }
+
+  /* Center-ish but still readable */
+  .launchingTopCenter {
+    text-align: left;
+  }
+
+  /* Product stage: constrain width so it fits */
+  .productStage {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Reduce top spacing and overall padding */
+  .heroShell {
+    padding: 22px 14px;
+  }
+
+  /* Smaller logo on phones */
+  .logoNoBox {
+    max-width: 150px;
+  }
+
+  /* Launching Soon: prevent overlap */
+  .launchingTopCenter {
+    font-size: clamp(22px, 7vw, 34px);
+    letter-spacing: 0.25em; /* keeps the premium spaced look */
+    margin-bottom: 10px;
+  }
+
+  /* CTA panel should be full-width and tighter */
+  .ctaPanel {
+    width: 100%;
+  }
+
+  /* Email form: stack input and button */
+  .notify {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .input {
+    width: 100%;
+    height: 48px;
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  .primaryBtn {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  /* Better paragraph spacing */
+  .copyP {
+    font-size: 14.5px;
+    line-height: 1.7;
+    margin: 12px 0;
+  }
+
+  /* Product stack: smaller and centered */
+  .productStage {
+    max-width: 420px;
+  }
+
+  /* If your layers are absolute, ensure a safe aspect */
+  .layerStack {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* keeps it from becoming too tall */
+  }
+}
+
+@media (max-width: 420px) {
+  /* Extra small phones */
+  .launchingTopCenter {
+    font-size: 22px;
+    letter-spacing: 0.22em;
+  }
+
+  .ctaTitle {
+    font-size: 14.5px;
+  }
+
+  .productStage {
+    max-width: 360px;
+  }
+}
+
+/* Optional: reduce heavy background on mobile for clarity */
+@media (max-width: 640px) {
+  .bgVignette {
+    opacity: 0.75;
+  }
+  .bgGrain {
+    opacity: 0.35;
+  }
+}
+
+/* ------------------------------
+   Mobile fixes (Wahaj landing)
+   ------------------------------ */
+   @media (max-width: 640px) {
+    /* Overall spacing */
+    .page {
+      overflow-x: hidden;
+    }
+  
+    .topbar {
+      padding-top: 18px;
+      padding-bottom: 6px;
+    }
+  
+    /* Logo: smaller + centered */
+    .brand img.logoNoBox {
+      width: 140px !important;
+      height: auto !important;
+    }
+  
+    /* Main hero container: remove “desktop card” feel on mobile */
+    .hero {
+      padding: 10px 14px 30px;
+    }
+  
+    .heroShell,
+    .heroShellNoBorder {
+      padding: 18px 14px 22px;
+      border-radius: 18px;
+    }
+  
+    /* Stack left/right instead of 2 columns */
+    .heroGrid {
+      display: grid;
+      grid-template-columns: 1fr !important;
+      gap: 18px !important;
+      align-items: start !important;
+    }
+  
+    .heroLeft {
+      text-align: center;
+    }
+  
+    /* Launching soon: smaller, less letter spacing, move up */
+    .launchingTopCenter {
+      margin-top: 6px !important;
+      margin-bottom: 14px !important;
+      font-size: clamp(22px, 7.2vw, 32px) !important;
+      letter-spacing: 0.22em !important; /* was too wide on mobile */
+      line-height: 1.1 !important;
+    }
+  
+    /* CTA panel should not become huge */
+    .ctaPanel,
+    .ctaPanelTop {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 16px 14px !important;
+      border-radius: 16px !important;
+    }
+  
+    .ctaTitle {
+      font-size: 18px !important;
+      line-height: 1.3 !important;
+      margin-bottom: 12px !important;
+    }
+  
+    /* Form: make input normal height + button full width */
+    .notify {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+    }
+  
+    .input {
+      width: 100% !important;
+      height: 46px !important;          /* critical: stops the huge empty box */
+      min-height: 46px !important;
+      padding: 12px 14px !important;
+      font-size: 16px !important;       /* avoids iOS zoom issues */
+      border-radius: 14px !important;
+    }
+  
+    .primaryBtn {
+      width: 100% !important;
+      height: 46px !important;
+      border-radius: 14px !important;
+      font-size: 16px !important;
+    }
+  
+    /* Meta line wraps nicely */
+    .ctaMeta {
+      margin-top: 10px !important;
+      display: flex !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      flex-wrap: wrap !important;
+      text-align: center !important;
+    }
+  
+    /* Paragraphs: keep readable on mobile */
+    .copyGroup {
+      margin-top: 14px !important;
+      max-width: 34ch !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: center !important;
+    }
+  
+    .copyP {
+      font-size: 14.5px !important;
+      line-height: 1.75 !important;
+      margin: 10px 0 !important;
+    }
+  
+    /* Product visuals: smaller, centered, not overwhelming */
+    .heroRight {
+      display: flex !important;
+      justify-content: center !important;
+    }
+  
+    .productStage {
+      width: min(92vw, 360px) !important;
+      height: min(92vw, 360px) !important;
+      margin: 6px auto 0 !important;
+    }
+  
+    /* If you have aggressive transforms on layers, soften them on mobile */
+    .layerStack .layer {
+      transform: translate3d(0, 0, 0) rotate(0deg) !important;
+    }
+  
+    /* Optional: reduce scroll hint spacing */
+    .scrollHint {
+      margin-top: 10px !important;
+    }
+  }
+  /* ==============================
+   MOBILE FORCE OVERRIDES (FINAL)
+   Put this at the VERY END
+   ============================== */
+@media (max-width: 640px) {
+
+  /* Make sure everything can center without overflow */
+  .page { overflow-x: hidden; }
+  .hero { padding: 14px 14px 26px !important; }
+
+  /* Force the hero container to not look “off-center” */
+  .heroShell,
+  .heroShellNoBorder {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 18px 14px 20px !important;
+    border-radius: 18px !important;
+  }
+
+  /* Force 1-column layout */
+  .heroGrid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    align-items: start !important;
+  }
+
+  /* True centering of ALL left content */
+  .heroLeft {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* Logo centered */
+  .topbarSimple {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  .brand { display: flex !important; justify-content: center !important; width: 100% !important; }
+  .logoNoBox { width: 140px !important; height: auto !important; }
+
+  /* Launching soon: centered and not too wide */
+  .launchingTopCenter {
+    width: 100% !important;
+    text-align: center !important;
+    margin: 6px 0 14px !important;
+    font-size: clamp(22px, 7vw, 30px) !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.15 !important;
+  }
+
+  /* CTA panel: centered + normal sizing */
+  .ctaPanel,
+  .ctaPanelTop {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .ctaTitle {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* FORM FIX: stop the “very tall email box” */
+  .notify {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .notify .input,
+  .ctaPanel .input,
+  input.input {
+    box-sizing: border-box !important;
+    width: 100% !important;
+
+    /* the key lines that fix the tall box */
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+
+    padding: 12px 14px !important;
+    font-size: 16px !important; /* prevents mobile zoom + keeps it normal */
+    line-height: 1.2 !important;
+    border-radius: 14px !important;
+  }
+
+  .notify .primaryBtn,
+  .ctaPanel .primaryBtn,
+  button.primaryBtn {
+    width: 100% !important;
+    height: 46px !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+  }
+
+  .ctaMeta {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* Paragraphs centered + readable */
+  .copyGroup {
+    width: 100% !important;
+    max-width: 40ch !important;
+    margin: 14px auto 0 !important;
+    text-align: center !important;
+  }
+  .copyP {
+    font-size: 14.5px !important;
+    line-height: 1.75 !important;
+    margin: 10px 0 !important;
+  }
+
+  /* RIGHT SIDE: make the 3 images show nicely on mobile */
+  .heroRight {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .productStage {
+    width: min(92vw, 360px) !important;
+    aspect-ratio: 1 / 1 !important;   /* ensures square stage */
+    height: auto !important;          /* stops weird stretching */
+    margin: 0 auto !important;
+  }
+
+  /* Make sure the layers actually fit and are visible */
+  .layerStack {
+    position: absolute !important;
+    inset: 0 !important;
+    overflow: visible !important;
+  }
+
+  .layer {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  /* IMPORTANT: if images look cropped, this fixes it */
+  .layerImg {
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  /* Softer mobile transforms so all 3 layers are visible */
+  .layer.l1 { transform: translate3d(0px, 10px, 0) rotate(-6deg) scale(1.02) !important; }
+  .layer.l2 { transform: translate3d(-8px, 0px, 0) rotate(3deg) scale(0.98) !important; opacity: .92 !important; }
+  .layer.l3 { transform: translate3d(10px, -10px, 0) rotate(7deg) scale(0.94) !important; opacity: .84 !important; }
+}
+/* ==============================
+   MOBILE: FIX PRODUCT IMAGE STACK
+   Put this at the VERY END
+   ============================== */
+   @media (max-width: 640px) {
+
+    /* Ensure the right side doesn't clip the stack */
+    .heroRight { overflow: visible !important; }
+  
+    /* Stage: predictable size and center */
+    .productStage {
+      position: relative !important;
+      width: min(94vw, 380px) !important;
+      aspect-ratio: 4 / 5 !important;  /* taller than square works better for cards */
+      height: auto !important;
+      margin: 6px auto 0 !important;
+      overflow: visible !important;     /* IMPORTANT: allow layers to show */
+    }
+  
+    /* Keep the halo/sweep/particles from covering the images */
+    .productHalo,
+    .productSweep,
+    .productParticles {
+      pointer-events: none !important;
+      z-index: 0 !important;
+    }
+  
+    /* Layer stack should fill stage */
+    .layerStack {
+      position: absolute !important;
+      inset: 0 !important;
+      overflow: visible !important;
+      z-index: 2 !important;
+    }
+  
+    /* Each layer should be centered and not full-inset cropping */
+    .layer {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      width: 88% !important;   /* makes all 3 visible */
+      height: 88% !important;
+      transform-origin: center !important;
+      border-radius: 18px !important;
+      overflow: hidden !important; /* keeps cards clean */
+    }
+  
+    /* Next/Image fill: make sure image displays fully */
+    .layerImg {
+      object-fit: contain !important;
+      object-position: center !important;
+    }
+  
+    /* Softer transforms so they don't fly off screen */
+    .layer.l1 {
+      z-index: 3 !important;
+      transform: translate(-50%, -48%) rotate(-6deg) !important;
+    }
+    .layer.l2 {
+      z-index: 2 !important;
+      opacity: 0.92 !important;
+      transform: translate(-54%, -52%) rotate(3deg) scale(0.98) !important;
+    }
+    .layer.l3 {
+      z-index: 1 !important;
+      opacity: 0.84 !important;
+      transform: translate(-46%, -58%) rotate(7deg) scale(0.94) !important;
+    }
+  
+    /* Optional: reduce motion on mobile so it stays stable */
+    .productStage { --rx: 0deg !important; --ry: 0deg !important; }
+  }
+  
+  /* Hide product images on mobile */
+@media (max-width: 640px) {
+  .heroRight {
+    display: none !important;
+  }
+
+  /* Make the left side take full width and stay centered */
+  .heroGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .heroLeft {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+  }
+}
