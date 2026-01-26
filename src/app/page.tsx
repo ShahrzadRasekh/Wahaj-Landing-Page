@@ -139,8 +139,8 @@ export default function Page() {
     if (isSubmitting) return;
 
     const trimmed = email.trim().toLowerCase();
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-    if (!valid) return showToast("Please enter a valid email address.");
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+    if (!ok) return showToast("Please enter a valid email address.");
 
     setIsSubmitting(true);
 
@@ -216,7 +216,7 @@ export default function Page() {
                     disabled={isSubmitting}
                   />
                   <button className="primaryBtn" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Get Notified"}
+                    {isSubmitting ? "Saving..." : "Get Notified"}
                   </button>
                 </form>
 
@@ -252,13 +252,34 @@ export default function Page() {
 
                 <div className="layerStack">
                   <div className="layer l3">
-                    <Image src="/wahaj3.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
+                    <Image
+                      src="/wahaj3.png"
+                      alt=""
+                      fill
+                      sizes="(max-width: 980px) 320px, 440px"
+                      className="layerImg"
+                      priority
+                    />
                   </div>
                   <div className="layer l2">
-                    <Image src="/wahaj2.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
+                    <Image
+                      src="/wahaj2.png"
+                      alt=""
+                      fill
+                      sizes="(max-width: 980px) 320px, 440px"
+                      className="layerImg"
+                      priority
+                    />
                   </div>
                   <div className="layer l1">
-                    <Image src="/wahaj1.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
+                    <Image
+                      src="/wahaj1.png"
+                      alt=""
+                      fill
+                      sizes="(max-width: 980px) 320px, 440px"
+                      className="layerImg"
+                      priority
+                    />
                   </div>
                 </div>
               </div>

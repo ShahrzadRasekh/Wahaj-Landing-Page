@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+export const runtime = "nodejs";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { ok: false, error: "MISSING_RESEND_API_KEY" },
-        { status: 500 }
-      );
+    const { email } = await req.json();
+
+    const cleanEmail = String(email ?? "").trim().toLowerCase();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail);
+
+    if (!ok) {
+      return NextResponse.json({ ok: false, error: "INVALID_EMAIL" }, { status: 400 });
     }
 
     if (!process.env.NOTIFY_TO_EMAIL) {
@@ -19,41 +23,29 @@ export async function POST(req: Request) {
       );
     }
 
-    const { email } = await req.json();
-    const cleanEmail = String(email ?? "").trim().toLowerCase();
-
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail);
-    if (!ok) {
-      return NextResponse.json(
-        { ok: false, error: "INVALID_EMAIL" },
-        { status: 400 }
-      );
-    }
-
-    // Send notification to your inbox
-    const { data, error } = await resend.emails.send({
+    const result = await resend.emails.send({
       from: "Wahaj <onboarding@resend.dev>",
-      to: "shahrzad.rasekh.marketing@gmail.com",
+      to: process.env.NOTIFY_TO_EMAIL,
       subject: "New Wahaj Launch Signup",
-      html: `<p>Email: ${cleanEmail}</p>`,
+      html: `
+        <h2>New email signup</h2>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
+      `,
     });
 
-    // ✅ CRITICAL: if Resend rejects (e.g., 403), return an error (do NOT pretend ok)
-    if (error) {
+    // If Resend returns an error field, handle it cleanly
+    if ((result as any)?.error) {
       return NextResponse.json(
-        {
-          ok: false,
-          error: "RESEND_ERROR",
-          details: error.message || String(error),
-        },
-        { status: 403 }
+        { ok: false, error: "RESEND_ERROR", details: (result as any).error },
+        { status: 502 }
       );
     }
 
-    return NextResponse.json({ ok: true, id: data?.id ?? null });
-  } catch (err: any) {
+    return NextResponse.json({ ok: true });
+  } catch (error: any) {
+    console.error("API /api/lead error:", error);
     return NextResponse.json(
-      { ok: false, error: "SERVER_ERROR", details: err?.message || String(err) },
+      { ok: false, error: "SERVER_ERROR", details: String(error?.message || error) },
       { status: 500 }
     );
   }
