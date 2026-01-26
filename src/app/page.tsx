@@ -24,8 +24,8 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const toastTimer = useRef<number | null>(null);
+
   const stageRef = useRef<HTMLDivElement | null>(null);
   const trailRef = useRef<HTMLDivElement | null>(null);
 
@@ -36,12 +36,6 @@ export default function Page() {
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
     };
   }, []);
-
-  function showToast(msg: string) {
-    setToast(msg);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
-  }
 
   // Product hover parallax
   useEffect(() => {
@@ -134,27 +128,27 @@ export default function Page() {
     };
   }, []);
 
+  function showToast(msg: string) {
+    setToast(msg);
+    if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isSubmitting) return;
 
     const trimmed = email.trim().toLowerCase();
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-    if (!ok) {
-      showToast("Please enter a valid email address.");
-      return;
-    }
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+    if (!valid) return showToast("Please enter a valid email address.");
 
     setIsSubmitting(true);
-
-    const controller = new AbortController();
 
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: trimmed }),
-        signal: controller.signal,
       });
 
       const data = await res.json().catch(() => null);
@@ -170,7 +164,6 @@ export default function Page() {
       showToast("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
-      controller.abort(); // safe cleanup
     }
   }
 
@@ -223,7 +216,7 @@ export default function Page() {
                     disabled={isSubmitting}
                   />
                   <button className="primaryBtn" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Saving..." : "Get Notified"}
+                    {isSubmitting ? "Sending..." : "Get Notified"}
                   </button>
                 </form>
 
@@ -259,34 +252,13 @@ export default function Page() {
 
                 <div className="layerStack">
                   <div className="layer l3">
-                    <Image
-                      src="/wahaj3.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
+                    <Image src="/wahaj3.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
                   </div>
                   <div className="layer l2">
-                    <Image
-                      src="/wahaj2.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
+                    <Image src="/wahaj2.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
                   </div>
                   <div className="layer l1">
-                    <Image
-                      src="/wahaj1.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
+                    <Image src="/wahaj1.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
                   </div>
                 </div>
               </div>
