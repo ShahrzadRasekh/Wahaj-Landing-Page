@@ -1356,3 +1356,20 @@ html, body {
     .productStage { --rx: 0deg !important; --ry: 0deg !important; }
   }
   
+  /* Hide product images on mobile */
+@media (max-width: 640px) {
+  .heroRight {
+    display: none !important;
+  }
+
+  /* Make the left side take full width and stay centered */
+  .heroGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .heroLeft {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+  }
+}
