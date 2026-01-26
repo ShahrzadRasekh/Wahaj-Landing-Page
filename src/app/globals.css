@@ -792,3 +792,189 @@ button, input{ font: inherit; }
     0 0 12px rgba(188,168,128,.42),
     0 0 26px rgba(188,168,128,.22) !important;
 }
+
+/* =========================
+   Mobile Refinements (Wahaj)
+   Paste at END of globals.css
+========================= */
+
+/* Ensure no horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Main page spacing */
+.page {
+  min-height: 100svh;
+}
+
+/* HERO container: reduce padding on small screens */
+.heroShell {
+  padding: 28px 16px;
+}
+
+/* If you have a max width wrapper, keep it centered */
+.heroShellNoBorder {
+  border: none !important;
+}
+
+/* Topbar logo scaling */
+.logoNoBox {
+  display: block;
+  height: auto;
+  width: auto;
+  max-width: 220px;
+}
+
+/* Typography tweaks for better mobile readability */
+.launchingTopCenter {
+  text-align: left;
+}
+
+/* Make paragraphs breathe more on mobile */
+.copyGroup {
+  margin-top: 16px;
+}
+.copyP {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+/* CTA panel spacing */
+.ctaPanelTop {
+  margin-top: 14px;
+}
+
+/* Email form should be responsive */
+.notify {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Inputs should not overflow */
+.input {
+  min-width: 0;
+}
+
+/* =========================
+   Responsive breakpoints
+========================= */
+
+@media (max-width: 980px) {
+  /* Stack the grid instead of side-by-side */
+  .heroGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* Put product block under text */
+  .heroRight {
+    order: 2;
+  }
+  .heroLeft {
+    order: 1;
+  }
+
+  /* Center-ish but still readable */
+  .launchingTopCenter {
+    text-align: left;
+  }
+
+  /* Product stage: constrain width so it fits */
+  .productStage {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Reduce top spacing and overall padding */
+  .heroShell {
+    padding: 22px 14px;
+  }
+
+  /* Smaller logo on phones */
+  .logoNoBox {
+    max-width: 150px;
+  }
+
+  /* Launching Soon: prevent overlap */
+  .launchingTopCenter {
+    font-size: clamp(22px, 7vw, 34px);
+    letter-spacing: 0.25em; /* keeps the premium spaced look */
+    margin-bottom: 10px;
+  }
+
+  /* CTA panel should be full-width and tighter */
+  .ctaPanel {
+    width: 100%;
+  }
+
+  /* Email form: stack input and button */
+  .notify {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .input {
+    width: 100%;
+    height: 48px;
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  .primaryBtn {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  /* Better paragraph spacing */
+  .copyP {
+    font-size: 14.5px;
+    line-height: 1.7;
+    margin: 12px 0;
+  }
+
+  /* Product stack: smaller and centered */
+  .productStage {
+    max-width: 420px;
+  }
+
+  /* If your layers are absolute, ensure a safe aspect */
+  .layerStack {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* keeps it from becoming too tall */
+  }
+}
+
+@media (max-width: 420px) {
+  /* Extra small phones */
+  .launchingTopCenter {
+    font-size: 22px;
+    letter-spacing: 0.22em;
+  }
+
+  .ctaTitle {
+    font-size: 14.5px;
+  }
+
+  .productStage {
+    max-width: 360px;
+  }
+}
+
+/* Optional: reduce heavy background on mobile for clarity */
+@media (max-width: 640px) {
+  .bgVignette {
+    opacity: 0.75;
+  }
+  .bgGrain {
+    opacity: 0.35;
+  }
+}
+

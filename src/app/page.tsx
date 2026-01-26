@@ -111,13 +111,17 @@ export default function Page() {
 
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
-      if (now - last < 22) return;
+      const isMobile = window.matchMedia("(max-width: 640px)").matches;
+const throttle = isMobile ? 45 : 22;
+if (now - last < throttle) return;
+
       last = now;
 
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         spawn(e.clientX, e.clientY);
-        if (Math.random() > 0.55) spawn(e.clientX, e.clientY);
+        const isMobile2 = window.matchMedia("(max-width: 640px)").matches;
+if (!isMobile2 && Math.random() > 0.55) spawn(e.clientX, e.clientY);
       });
     };
 
