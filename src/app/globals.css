@@ -1115,4 +1115,171 @@ html, body {
       margin-top: 10px !important;
     }
   }
-  
+  /* ==============================
+   MOBILE FORCE OVERRIDES (FINAL)
+   Put this at the VERY END
+   ============================== */
+@media (max-width: 640px) {
+
+  /* Make sure everything can center without overflow */
+  .page { overflow-x: hidden; }
+  .hero { padding: 14px 14px 26px !important; }
+
+  /* Force the hero container to not look “off-center” */
+  .heroShell,
+  .heroShellNoBorder {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 18px 14px 20px !important;
+    border-radius: 18px !important;
+  }
+
+  /* Force 1-column layout */
+  .heroGrid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    align-items: start !important;
+  }
+
+  /* True centering of ALL left content */
+  .heroLeft {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* Logo centered */
+  .topbarSimple {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  .brand { display: flex !important; justify-content: center !important; width: 100% !important; }
+  .logoNoBox { width: 140px !important; height: auto !important; }
+
+  /* Launching soon: centered and not too wide */
+  .launchingTopCenter {
+    width: 100% !important;
+    text-align: center !important;
+    margin: 6px 0 14px !important;
+    font-size: clamp(22px, 7vw, 30px) !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.15 !important;
+  }
+
+  /* CTA panel: centered + normal sizing */
+  .ctaPanel,
+  .ctaPanelTop {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .ctaTitle {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* FORM FIX: stop the “very tall email box” */
+  .notify {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .notify .input,
+  .ctaPanel .input,
+  input.input {
+    box-sizing: border-box !important;
+    width: 100% !important;
+
+    /* the key lines that fix the tall box */
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+
+    padding: 12px 14px !important;
+    font-size: 16px !important; /* prevents mobile zoom + keeps it normal */
+    line-height: 1.2 !important;
+    border-radius: 14px !important;
+  }
+
+  .notify .primaryBtn,
+  .ctaPanel .primaryBtn,
+  button.primaryBtn {
+    width: 100% !important;
+    height: 46px !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+  }
+
+  .ctaMeta {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* Paragraphs centered + readable */
+  .copyGroup {
+    width: 100% !important;
+    max-width: 40ch !important;
+    margin: 14px auto 0 !important;
+    text-align: center !important;
+  }
+  .copyP {
+    font-size: 14.5px !important;
+    line-height: 1.75 !important;
+    margin: 10px 0 !important;
+  }
+
+  /* RIGHT SIDE: make the 3 images show nicely on mobile */
+  .heroRight {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .productStage {
+    width: min(92vw, 360px) !important;
+    aspect-ratio: 1 / 1 !important;   /* ensures square stage */
+    height: auto !important;          /* stops weird stretching */
+    margin: 0 auto !important;
+  }
+
+  /* Make sure the layers actually fit and are visible */
+  .layerStack {
+    position: absolute !important;
+    inset: 0 !important;
+    overflow: visible !important;
+  }
+
+  .layer {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  /* IMPORTANT: if images look cropped, this fixes it */
+  .layerImg {
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  /* Softer mobile transforms so all 3 layers are visible */
+  .layer.l1 { transform: translate3d(0px, 10px, 0) rotate(-6deg) scale(1.02) !important; }
+  .layer.l2 { transform: translate3d(-8px, 0px, 0) rotate(3deg) scale(0.98) !important; opacity: .92 !important; }
+  .layer.l3 { transform: translate3d(10px, -10px, 0) rotate(7deg) scale(0.94) !important; opacity: .84 !important; }
+}
