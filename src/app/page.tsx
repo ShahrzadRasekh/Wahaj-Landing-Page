@@ -23,6 +23,7 @@ function useScrollVars() {
 export default function Page() {
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const toastTimer = useRef<number | null>(null);
 
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -134,19 +135,42 @@ export default function Page() {
     toastTimer.current = window.setTimeout(() => setToast(null), 2600);
   }
 
-  function onSubmit(e: React.FormEvent) {
+  // ✅ UPDATED: sends email to /api/lead (Vercel backend) instead of localStorage
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const trimmed = email.trim();
+
+    const trimmed = email.trim().toLowerCase();
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
     if (!ok) return showToast("Please enter a valid email address.");
+    if (isSubmitting) return;
 
-    const key = "wahaj_leads";
-    const existing = JSON.parse(localStorage.getItem(key) || "[]");
-    const next = Array.from(new Set([...existing, trimmed]));
-    localStorage.setItem(key, JSON.stringify(next));
+    setIsSubmitting(true);
 
-    setEmail("");
-    showToast("You’re on the list. We’ll notify you at launch.");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (data?.error === "INVALID_EMAIL") {
+          showToast("Please enter a valid email address.");
+        } else {
+          showToast("Something went wrong. Please try again.");
+        }
+        return;
+      }
+
+      setEmail("");
+      showToast("You’re on the list. We’ll notify you at launch.");
+    } catch {
+      showToast("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -198,9 +222,10 @@ export default function Page() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
+                    disabled={isSubmitting}
                   />
-                  <button className="primaryBtn" type="submit">
-                    Get Notified
+                  <button className="primaryBtn" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Saving..." : "Get Notified"}
                   </button>
                 </form>
 
@@ -277,7 +302,7 @@ export default function Page() {
         </div>
       </section>
 
-           {toast && (
+      {toast && (
         <div className="toast" role="status" aria-live="polite">
           {toast}
         </div>
