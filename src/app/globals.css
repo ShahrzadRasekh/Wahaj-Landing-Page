@@ -1283,3 +1283,76 @@ html, body {
   .layer.l2 { transform: translate3d(-8px, 0px, 0) rotate(3deg) scale(0.98) !important; opacity: .92 !important; }
   .layer.l3 { transform: translate3d(10px, -10px, 0) rotate(7deg) scale(0.94) !important; opacity: .84 !important; }
 }
+/* ==============================
+   MOBILE: FIX PRODUCT IMAGE STACK
+   Put this at the VERY END
+   ============================== */
+   @media (max-width: 640px) {
+
+    /* Ensure the right side doesn't clip the stack */
+    .heroRight { overflow: visible !important; }
+  
+    /* Stage: predictable size and center */
+    .productStage {
+      position: relative !important;
+      width: min(94vw, 380px) !important;
+      aspect-ratio: 4 / 5 !important;  /* taller than square works better for cards */
+      height: auto !important;
+      margin: 6px auto 0 !important;
+      overflow: visible !important;     /* IMPORTANT: allow layers to show */
+    }
+  
+    /* Keep the halo/sweep/particles from covering the images */
+    .productHalo,
+    .productSweep,
+    .productParticles {
+      pointer-events: none !important;
+      z-index: 0 !important;
+    }
+  
+    /* Layer stack should fill stage */
+    .layerStack {
+      position: absolute !important;
+      inset: 0 !important;
+      overflow: visible !important;
+      z-index: 2 !important;
+    }
+  
+    /* Each layer should be centered and not full-inset cropping */
+    .layer {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      width: 88% !important;   /* makes all 3 visible */
+      height: 88% !important;
+      transform-origin: center !important;
+      border-radius: 18px !important;
+      overflow: hidden !important; /* keeps cards clean */
+    }
+  
+    /* Next/Image fill: make sure image displays fully */
+    .layerImg {
+      object-fit: contain !important;
+      object-position: center !important;
+    }
+  
+    /* Softer transforms so they don't fly off screen */
+    .layer.l1 {
+      z-index: 3 !important;
+      transform: translate(-50%, -48%) rotate(-6deg) !important;
+    }
+    .layer.l2 {
+      z-index: 2 !important;
+      opacity: 0.92 !important;
+      transform: translate(-54%, -52%) rotate(3deg) scale(0.98) !important;
+    }
+    .layer.l3 {
+      z-index: 1 !important;
+      opacity: 0.84 !important;
+      transform: translate(-46%, -58%) rotate(7deg) scale(0.94) !important;
+    }
+  
+    /* Optional: reduce motion on mobile so it stays stable */
+    .productStage { --rx: 0deg !important; --ry: 0deg !important; }
+  }
+  
