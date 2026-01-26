@@ -277,19 +277,7 @@ export default function Page() {
         </div>
       </section>
 
-      <footer className="footer introLine">
-        <div className="footerInner footerInnerNoBorder">
-          <div>
-            <div className="footerBrand">Wahaj</div>
-            <div className="footerSub">This is a temporary pre-launch landing page.</div>
-          </div>
-          <a className="ghostBtn" href="#notify">
-            Get Notified
-          </a>
-        </div>
-      </footer>
-
-      {toast && (
+           {toast && (
         <div className="toast" role="status" aria-live="polite">
           {toast}
         </div>
