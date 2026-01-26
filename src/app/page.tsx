@@ -24,8 +24,8 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const toastTimer = useRef<number | null>(null);
 
+  const toastTimer = useRef<number | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const trailRef = useRef<HTMLDivElement | null>(null);
 
@@ -36,6 +36,12 @@ export default function Page() {
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
     };
   }, []);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
+  }
 
   // Product hover parallax
   useEffect(() => {
@@ -80,7 +86,7 @@ export default function Page() {
     };
   }, []);
 
-  // Background mouse trail (slightly bigger stars)
+  // Background mouse trail
   useEffect(() => {
     const wrap = trailRef.current;
     if (!wrap) return;
@@ -98,8 +104,7 @@ export default function Page() {
       dot.style.left = `${x + jitterX}px`;
       dot.style.top = `${y + jitterY}px`;
 
-      // Bigger than before
-      const size = 2 + Math.random() * 3.2; // 2px–5.2px
+      const size = 2 + Math.random() * 3.2;
       dot.style.width = `${size}px`;
       dot.style.height = `${size}px`;
 
@@ -129,32 +134,46 @@ export default function Page() {
     };
   }, []);
 
-  function showToast(msg: string) {
-    setToast(msg);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
-  }
-
-  // ✅ UPDATED: sends email to /api/lead (Vercel backend) instead of localStorage
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-  
-    const res = await fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-  
-    if (res.ok) {
+    if (isSubmitting) return;
+
+    const trimmed = email.trim().toLowerCase();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+    if (!ok) {
+      showToast("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const controller = new AbortController();
+
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed }),
+        signal: controller.signal,
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok || !data?.ok) {
+        showToast(data?.details || data?.error || "Something went wrong. Please try again.");
+        return;
+      }
+
       setEmail("");
       showToast("You’re on the list. We’ll notify you at launch.");
-    } else {
+    } catch {
       showToast("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+      controller.abort(); // safe cleanup
     }
   }
-  
-  
-  
+
   return (
     <main className="page">
       <div className="scrollProgress" aria-hidden="true">
@@ -170,7 +189,6 @@ export default function Page() {
 
       <div ref={trailRef} className="trailLayer" aria-hidden="true" />
 
-      {/* Topbar: logo only (bigger, no border box) */}
       <header className="topbar topbarSimple">
         <div className="brand introLine">
           <Image
@@ -188,12 +206,10 @@ export default function Page() {
         <div className="heroShell heroShellNoBorder">
           <div className="heroGrid">
             <div className="heroLeft">
-              {/* LAUNCHING SOON centered, one line */}
               <div className="launchingTopCenter introLine introDelay1">
                 LAUNCHING SOON
               </div>
 
-              {/* Email box moved directly under LAUNCHING SOON */}
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
                 <div className="ctaTitle">Be notified when Wahaj launches.</div>
 
@@ -219,7 +235,6 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Paragraphs moved under the email section */}
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
                   A new platform for buying{" "}
