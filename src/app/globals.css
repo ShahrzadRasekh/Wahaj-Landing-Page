@@ -718,3 +718,48 @@ button, input{ font: inherit; }
     pointer-events: none !important;
   }
 }
+
+/* ===== MOBILE: remove the tinted area behind the floating images only ===== */
+@media (max-width: 640px) {
+
+  /* Make sure this section can host an overlay */
+  .heroRight {
+    position: relative !important;
+    isolation: isolate !important;
+    z-index: 6 !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 12px auto 10px !important;
+  }
+
+  /*
+    This overlay "cleans" the background ONLY behind the images area.
+    It covers the hero's gradient/lighting (the maroon plate) in this band.
+  */
+  .heroRight::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+
+    /* cover full viewport width (removes the side tinted strips) */
+    width: 100vw !important;
+
+    /* cover a bit above/below the images area */
+    top: -18px !important;
+    bottom: -18px !important;
+
+    background: var(--ink) !important; /* same as page background */
+    z-index: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* keep images above the overlay */
+  .heroRight .productStage,
+  .heroRight .layerStack,
+  .heroRight .floatWrap,
+  .heroRight .layer {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+}
