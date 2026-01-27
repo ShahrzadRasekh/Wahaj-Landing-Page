@@ -150,22 +150,17 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: trimmed }),
       });
-
+      
       const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        if (data?.error === "INVALID_EMAIL") {
-          showToast("Please enter a valid email address.");
-        } else {
-          showToast("Something went wrong. Please try again.");
-        }
+      
+      if (!res.ok || !data?.ok) {
+        showToast(data?.details || data?.error || "Something went wrong. Please try again.");
         return;
       }
-
+      
       setEmail("");
       showToast("You’re on the list. We’ll notify you at launch.");
-    } catch {
-      showToast("Network error. Please try again.");
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -305,7 +300,7 @@ export default function Page() {
             </div>
 
             {/* ✅ DESKTOP IMAGES: right column */}
-            <div className="heroRight desktopOnlyProduct" aria-hidden="true">
+            <div className="heroRight desktopOnlyProduct" aria-hidden="true" id="mobileImages">
               <ProductStack mode="desktop" stageRef={stageRefDesktop} />
             </div>
           </div>
