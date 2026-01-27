@@ -136,35 +136,40 @@ export default function Page() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-
+    if (isSubmitting) return;
+  
     const trimmed = email.trim().toLowerCase();
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
     if (!ok) return showToast("Please enter a valid email address.");
-    if (isSubmitting) return;
-
+  
     setIsSubmitting(true);
-
+  
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: trimmed }),
       });
-      
+  
       const data = await res.json().catch(() => ({}));
-      
+  
       if (!res.ok || !data?.ok) {
-        showToast(data?.details || data?.error || "Something went wrong. Please try again.");
+        // show useful error messages
+        if (data?.error === "INVALID_EMAIL") showToast("Please enter a valid email address.");
+        else if (data?.error === "MISSING_ENV") showToast("Server setup error. Please contact support.");
+        else showToast("Something went wrong. Please try again.");
         return;
       }
-      
+  
       setEmail("");
       showToast("You’re on the list. We’ll notify you at launch.");
-      
+    } catch {
+      showToast("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   }
+  
 
   const ProductStack = ({
     mode,
