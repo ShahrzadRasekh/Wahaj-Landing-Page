@@ -152,14 +152,15 @@ export default function Page() {
       });
   
       const data = await res.json().catch(() => ({}));
-  
-      if (!res.ok || !data?.ok) {
-        // show useful error messages
-        if (data?.error === "INVALID_EMAIL") showToast("Please enter a valid email address.");
-        else if (data?.error === "MISSING_ENV") showToast("Server setup error. Please contact support.");
-        else showToast("Something went wrong. Please try again.");
-        return;
-      }
+
+if (!res.ok || !data?.ok) {
+  showToast(data?.error === "MISSING_ENV"
+    ? "Server setup error: missing environment variables."
+    : "Something went wrong. Please try again."
+  );
+  return;
+}
+
   
       setEmail("");
       showToast("You’re on the list. We’ll notify you at launch.");
