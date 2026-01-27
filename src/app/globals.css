@@ -662,44 +662,59 @@ button, input{ font: inherit; }
   }
 }
 
-/* === Mobile: remove the colored background ONLY under the floating images === */
+/* ===== Mobile: remove maroon plate under floating images + fix layering ===== */
 @media (max-width: 640px) {
-  /* Create a neutral (ink) patch behind the images area only */
+
+  /* Make stacking predictable */
   .heroRight {
     position: relative !important;
-    isolation: isolate !important; /* makes z-index layering predictable */
+    isolation: isolate !important;
+    z-index: 5 !important;
   }
 
-  .heroRight::before {
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    top: -8px !important;
-
-    /* match your mobile stage size */
-    width: min(86vw, 360px) !important;
-    height: 280px !important;
-
-    background: var(--ink) !important; /* removes the maroon “panel” look */
-    border-radius: 28px !important;
-
-    z-index: 0 !important;
-  }
-
-  /* Ensure the stage sits above that patch */
+  /* Remove the stage "plate" background completely on mobile */
   .heroRight .productStage {
-    position: relative !important;
-    z-index: 1 !important;
-
     background: transparent !important;
     box-shadow: none !important;
+    overflow: visible !important;
+    z-index: 2 !important;
   }
 
-  /* Also disable stage-only glow layers that can look like a background plate */
+  /* Turn off glow layers that look like a plate behind the images */
   .heroRight .productHalo,
   .heroRight .productParticles,
   .heroRight .productSweep {
     display: none !important;
+  }
+
+  /* IMPORTANT: ensure floating wrappers + layers are always above everything */
+  .heroRight .layerStack {
+    position: relative !important;
+    z-index: 3 !important;
+    overflow: visible !important;
+  }
+
+  .heroRight .floatWrap {
+    z-index: 4 !important;
+    position: absolute !important;
+  }
+
+  .heroRight .layer {
+    z-index: 5 !important;
+  }
+
+  /* Optional: if any parent overlay is still bleeding through, "ink patch" BEHIND images only */
+  .heroRight::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: -10px !important;
+    width: min(86vw, 360px) !important;
+    height: 300px !important;
+    background: var(--ink) !important;  /* same as page background */
+    border-radius: 28px !important;
+    z-index: 0 !important;             /* stays behind images */
+    pointer-events: none !important;
   }
 }
