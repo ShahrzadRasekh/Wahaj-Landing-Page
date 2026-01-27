@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-export const runtime = "nodejs"; // Resend SDK requires Node runtime on Vercel
+export const runtime = "nodejs"; // IMPORTANT: Resend SDK needs Node runtime
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,34 +18,58 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "INVALID_EMAIL" }, { status: 400 });
     }
 
-    const notifyTo = process.env.NOTIFY_TO_EMAIL;
-    if (!process.env.RESEND_API_KEY || !notifyTo) {
+    const toNotify = process.env.NOTIFY_TO_EMAIL;
+    const fromEmail = process.env.FROM_EMAIL;
+
+    if (!toNotify || !fromEmail || !process.env.RESEND_API_KEY) {
       return NextResponse.json(
         { ok: false, error: "MISSING_ENV" },
         { status: 500 }
       );
     }
 
-    const result = await resend.emails.send({
-      // IMPORTANT: this works without domain verification
-      // (Later, when you verify wahajgold.com in Resend, you can use no-reply@wahajgold.com)
-      from: "Wahaj <onboarding@resend.dev>",
-      to: notifyTo, // -> info@wahajgold.com
+    // 1) Email to your team inbox (info@wahajgold.com)
+    const notifyResult = await resend.emails.send({
+      from: fromEmail,
+      to: toNotify,
       subject: "New Wahaj Launch Signup",
       html: `
         <div style="font-family:Arial,sans-serif;line-height:1.6">
           <h2>New email signup</h2>
           <p><strong>Email:</strong> ${cleanEmail}</p>
-          <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+          <p style="color:#666;font-size:12px">Sent from the landing page form.</p>
         </div>
       `,
     });
 
-    return NextResponse.json({ ok: true, id: result.data?.id ?? null });
+    // 2) Auto-reply to the user (thank you message)
+    // NOTE: Delivery is best after you verify wahajgold.com domain in Resend.
+    const autoReplyResult = await resend.emails.send({
+      from: fromEmail,
+      to: cleanEmail,
+      subject: "Thanks for joining the Wahaj list",
+      html: `
+        <div style="font-family:Arial,sans-serif;line-height:1.6">
+          <p>Thanks for joining the Wahaj launch list.</p>
+          <p>We’ll notify you as soon as we launch.</p>
+          <p style="margin-top:16px;color:#666;font-size:12px">
+            If you didn’t request this, you can ignore this email.
+          </p>
+        </div>
+      `,
+    });
+
+    return NextResponse.json({
+      ok: true,
+      notifyId: notifyResult.data?.id ?? null,
+      autoReplyId: autoReplyResult.data?.id ?? null,
+    });
   } catch (err: any) {
+    // This will show up in Vercel → Functions logs
     console.error("LEAD API ERROR:", err);
+
     return NextResponse.json(
-      { ok: false, error: "SERVER_ERROR" },
+      { ok: false, error: "SERVER_ERROR", details: err?.message ?? "Unknown error" },
       { status: 500 }
     );
   }
