@@ -592,6 +592,19 @@ button, input{ font: inherit; }
 .desktopOnlyProduct{ display:flex; }
 
 @media (max-width: 640px) {
+  /* Remove the “panel background” under the floating images (mobile only) */
+  .productStage {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove the extra glow layers that look like background under them */
+  .productHalo,
+  .productParticles,
+  .productSweep {
+    display: none !important;
+  }
+  
   .heroGrid{
     grid-template-columns: 1fr;
     gap: 18px;
