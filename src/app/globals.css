@@ -596,48 +596,86 @@ button, input{ font: inherit; }
 }
 
 /* Responsive */
-@media (max-width: 980px){
-  .heroGrid{ grid-template-columns: 1fr; }
-  .productStage{ height: 360px; }
-/* Gold-feeling hover lines (cursor-following) */
-.productStage::after{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  pointer-events:none;
-  opacity: 0;
-  transition: opacity 220ms ease;
-  mix-blend-mode: screen;
+/* Mobile: show floating images in a safe, clean way */
+@media (max-width: 640px) {
+  /* Keep 1-column layout */
+  .heroGrid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
 
-  /* multiple thin gold streaks */
-  background:
-    repeating-linear-gradient(
-      115deg,
-      rgba(188,168,128,.00) 0px,
-      rgba(188,168,128,.00) 18px,
-      rgba(188,168,128,.18) 20px,
-      rgba(188,168,128,.00) 24px
-    );
+  .heroLeft {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+  }
 
-  /* move the streaks based on mouse position */
-  transform:
-    translate(
-      calc((var(--mx, .5) - .5) * 22px),
-      calc((var(--my, .5) - .5) * 18px)
-    )
-    rotate(-8deg);
-  filter: blur(0.4px);
+  /* Show the image section under the text */
+  .heroRight {
+    display: block !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 10px auto 0 !important;
+  }
+
+  /* Make the stage smaller and centered */
+  .productStage {
+    width: min(92vw, 520px) !important;
+    height: 320px !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+
+  /* Softer background effects for mobile */
+  .productHalo,
+  .productParticles {
+    opacity: 0.55 !important;
+    filter: blur(18px) !important;
+  }
+
+  /* Keep stack centered */
+  .layerStack {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+  }
+
+  /* Ensure images always fit inside and never crop weird */
+  .layer {
+    inset: 0 !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .layerImg {
+    object-fit: contain !important;
+    padding: 14px !important; /* gives breathing room */
+  }
+
+  /* Mobile-friendly floating animation (no overlap) */
+  .layer.l1 { transform: translateY(8px) rotate(-2deg) !important; }
+  .layer.l2 { transform: translateY(-6px) rotate(1.5deg) !important; opacity: 0.92 !important; }
+  .layer.l3 { transform: translateY(-16px) rotate(3deg) !important; opacity: 0.85 !important; }
+
+  /* Floating motion */
+  .layer.l1, .layer.l2, .layer.l3 {
+    animation: mobileFloat 4.8s ease-in-out infinite;
+    will-change: transform;
+  }
+  .layer.l2 { animation-delay: .25s; }
+  .layer.l3 { animation-delay: .45s; }
+
+  @keyframes mobileFloat {
+    0%, 100% { transform: translateY(0px) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+  }
+
+  /* Map rotations through CSS variables so animation doesn't wipe our base transforms */
+  .layer.l1 { --r: -2deg; }
+  .layer.l2 { --r: 1.5deg; }
+  .layer.l3 { --r: 3deg; }
 }
 
-.productStage:hover::after{
-  opacity: .55;
-}
-
-
-.layerStack{ width: 340px; height: 280px; }
-  .logoWrap{ width: 78px; height: 78px; border-radius: 18px; }
-  .logo{ width: 72px; height: 72px; }
-}
 
 /* Background mouse trail layer (gold tiny stars) */
 .trailLayer{

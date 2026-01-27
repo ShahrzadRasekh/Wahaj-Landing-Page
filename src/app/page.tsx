@@ -40,7 +40,9 @@ export default function Page() {
   // Product hover parallax
   useEffect(() => {
     const el = stageRef.current;
-    if (!el) return;
+if (!el) return;
+if (window.matchMedia("(max-width: 640px)").matches) return;
+
 
     let raf = 0;
 
