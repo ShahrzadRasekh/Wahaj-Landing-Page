@@ -17,6 +17,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wahaj-landing-page-cwxo.vercel.app"),
   title: "Wahaj — Launching Soon",
   description:
     "A new platform for buying certified physical gold and silver, built on transparency, responsible sourcing, and secure delivery.",
@@ -24,8 +25,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${tajawal.variable} ${playfair.variable}`}>{children}</body>
+    <html lang="en" className={`${tajawal.variable} ${playfair.variable}`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#070506" />
+      </head>
+      <body className="appBody">{children}</body>
     </html>
   );
 }

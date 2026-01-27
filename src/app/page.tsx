@@ -26,7 +26,7 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toastTimer = useRef<number | null>(null);
 
-  const stageRef = useRef<HTMLDivElement | null>(null);
+  const stageRefDesktop = useRef<HTMLDivElement | null>(null);
   const trailRef = useRef<HTMLDivElement | null>(null);
 
   useScrollVars();
@@ -37,12 +37,10 @@ export default function Page() {
     };
   }, []);
 
-  // Product hover parallax
+  // Desktop parallax only (keeps mobile smooth + stable)
   useEffect(() => {
-    const el = stageRef.current;
-if (!el) return;
-if (window.matchMedia("(max-width: 640px)").matches) return;
-
+    const el = stageRefDesktop.current;
+    if (!el) return;
 
     let raf = 0;
 
@@ -82,7 +80,7 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
     };
   }, []);
 
-  // Background mouse trail (slightly bigger stars)
+  // Background mouse trail
   useEffect(() => {
     const wrap = trailRef.current;
     if (!wrap) return;
@@ -100,8 +98,7 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
       dot.style.left = `${x + jitterX}px`;
       dot.style.top = `${y + jitterY}px`;
 
-      // Bigger than before
-      const size = 2 + Math.random() * 3.2; // 2px–5.2px
+      const size = 2 + Math.random() * 3.2;
       dot.style.width = `${size}px`;
       dot.style.height = `${size}px`;
 
@@ -137,7 +134,6 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
     toastTimer.current = window.setTimeout(() => setToast(null), 2600);
   }
 
-  // ✅ UPDATED: sends email to /api/lead (Vercel backend) instead of localStorage
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -175,6 +171,60 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
     }
   }
 
+  const ProductStack = ({
+    mode,
+    stageRef,
+  }: {
+    mode: "desktop" | "mobile";
+    stageRef?: React.RefObject<HTMLDivElement | null>;
+  }) => {
+    const stageClass =
+      mode === "desktop" ? "productStage productStageDesktop" : "productStage productStageMobile";
+    const stackClass =
+      mode === "desktop" ? "layerStack layerStackDesktop" : "layerStack layerStackMobile";
+
+    return (
+      <div className={stageClass} ref={stageRef}>
+        <div className="productHalo" />
+        <div className="productSweep" />
+        <div className="productParticles" />
+
+        <div className={stackClass}>
+          <div className="layer l3">
+            <Image
+              src="/wahaj3.png"
+              alt=""
+              fill
+              sizes="(max-width: 980px) 320px, 440px"
+              className="layerImg"
+              priority
+            />
+          </div>
+          <div className="layer l2">
+            <Image
+              src="/wahaj2.png"
+              alt=""
+              fill
+              sizes="(max-width: 980px) 320px, 440px"
+              className="layerImg"
+              priority
+            />
+          </div>
+          <div className="layer l1">
+            <Image
+              src="/wahaj1.png"
+              alt=""
+              fill
+              sizes="(max-width: 980px) 320px, 440px"
+              className="layerImg"
+              priority
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <main className="page">
       <div className="scrollProgress" aria-hidden="true">
@@ -190,7 +240,6 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
 
       <div ref={trailRef} className="trailLayer" aria-hidden="true" />
 
-      {/* Topbar: logo only (bigger, no border box) */}
       <header className="topbar topbarSimple">
         <div className="brand introLine">
           <Image
@@ -208,12 +257,8 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
         <div className="heroShell heroShellNoBorder">
           <div className="heroGrid">
             <div className="heroLeft">
-              {/* LAUNCHING SOON centered, one line */}
-              <div className="launchingTopCenter introLine introDelay1">
-                LAUNCHING SOON
-              </div>
+              <div className="launchingTopCenter introLine introDelay1">LAUNCHING SOON</div>
 
-              {/* Email box moved directly under LAUNCHING SOON */}
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
                 <div className="ctaTitle">Be notified when Wahaj launches.</div>
 
@@ -239,7 +284,11 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
                 </div>
               </div>
 
-              {/* Paragraphs moved under the email section */}
+              {/* ✅ MOBILE IMAGES: after email box, before paragraphs */}
+              <div className="mobileOnlyProduct" aria-hidden="true">
+                <ProductStack mode="mobile" />
+              </div>
+
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
                   A new platform for buying{" "}
@@ -249,60 +298,15 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
 
                 <p className="copyP">
                   Designed for investors and buyers who value{" "}
-                  <span className="shinyWord">trust</span>,{" "}
-                  <span className="shinyWord">quality</span>, and{" "}
+                  <span className="shinyWord">trust</span>, <span className="shinyWord">quality</span>, and{" "}
                   <span className="shinyWord">clarity</span>.
                 </p>
               </div>
             </div>
 
-            <div className="heroRight" aria-hidden="true">
-              <div className="productStage" ref={stageRef}>
-                <div className="productHalo" />
-                <div className="productSweep" />
-                <div className="productParticles" />
-
-                <div className="layerStack">
-  <div className="floatWrap fw3">
-    <div className="layer l3">
-      <Image
-        src="/wahaj3.png"
-        alt=""
-        fill
-        sizes="(max-width: 980px) 320px, 440px"
-        className="layerImg"
-        priority
-      />
-    </div>
-  </div>
-
-  <div className="floatWrap fw2">
-    <div className="layer l2">
-      <Image
-        src="/wahaj2.png"
-        alt=""
-        fill
-        sizes="(max-width: 980px) 320px, 440px"
-        className="layerImg"
-        priority
-      />
-    </div>
-  </div>
-
-  <div className="floatWrap fw1">
-    <div className="layer l1">
-      <Image
-        src="/wahaj1.png"
-        alt=""
-        fill
-        sizes="(max-width: 980px) 320px, 440px"
-        className="layerImg"
-        priority
-      />
-    </div>
-  </div>
-</div>
-</div>
+            {/* ✅ DESKTOP IMAGES: right column */}
+            <div className="heroRight desktopOnlyProduct" aria-hidden="true">
+              <ProductStack mode="desktop" stageRef={stageRefDesktop} />
             </div>
           </div>
 
