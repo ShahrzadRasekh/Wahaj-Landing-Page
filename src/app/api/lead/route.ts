@@ -1,22 +1,24 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-export const runtime = "nodejs"; // ensure Node runtime (Resend SDK)
+export const runtime = "nodejs";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    const apiKey = process.env.RESEND_API_KEY;
+    const notifyTo = process.env.NOTIFY_TO_EMAIL;
+
+    if (!apiKey) {
       return NextResponse.json(
-        { ok: false, error: "MISSING_ENV", message: "RESEND_API_KEY is not set on Vercel (Production)." },
+        { ok: false, error: "MISSING_RESEND_API_KEY" },
         { status: 500 }
       );
     }
-
-    if (!process.env.NOTIFY_TO_EMAIL) {
+    if (!notifyTo) {
       return NextResponse.json(
-        { ok: false, error: "MISSING_ENV", message: "NOTIFY_TO_EMAIL is not set on Vercel (Production)." },
+        { ok: false, error: "MISSING_NOTIFY_TO_EMAIL" },
         { status: 500 }
       );
     }
@@ -27,35 +29,35 @@ export async function POST(req: Request) {
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail);
     if (!ok) {
       return NextResponse.json(
-        { ok: false, error: "INVALID_EMAIL", message: "Please enter a valid email address." },
+        { ok: false, error: "INVALID_EMAIL" },
         { status: 400 }
       );
     }
 
     const result = await resend.emails.send({
-      from: "Wahaj <onboarding@resend.dev>", // safe default for now
-      to: process.env.NOTIFY_TO_EMAIL,
+      from: "Wahaj <onboarding@resend.dev>",
+      to: notifyTo, // receiver you set in Vercel env
       subject: "New Wahaj Launch Signup",
-      html: `<h2>New email signup</h2><p><strong>Email:</strong> ${cleanEmail}</p>`,
+      html: `<h2>New signup</h2><p><strong>Email:</strong> ${cleanEmail}</p>`,
       replyTo: cleanEmail,
     });
 
-    // Resend may return { error } without throwing
-    // (depends on SDK version)
     // @ts-ignore
-    if ((result as any)?.error) {
+    if (result?.error) {
       // @ts-ignore
-      const errMsg = (result as any).error?.message || "Resend rejected the request.";
+      console.error("RESEND_ERROR:", result.error);
+      // @ts-ignore
       return NextResponse.json(
-        { ok: false, error: "RESEND_ERROR", message: errMsg },
+        { ok: false, error: "RESEND_ERROR", details: result.error?.message || "Resend rejected the request" },
         { status: 502 }
       );
     }
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
+    console.error("SERVER_ERROR:", err);
     return NextResponse.json(
-      { ok: false, error: "SERVER_ERROR", message: err?.message || "Server error" },
+      { ok: false, error: "SERVER_ERROR", details: err?.message || "Unknown error" },
       { status: 500 }
     );
   }
