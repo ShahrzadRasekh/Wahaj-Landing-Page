@@ -1,76 +1,88 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-export const runtime = "nodejs"; // IMPORTANT: Resend SDK needs Node runtime
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function json(status: number, body: any) {
+  return NextResponse.json(body, { status });
 }
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
-    const cleanEmail = String(email ?? "").trim().toLowerCase();
-
-    if (!isValidEmail(cleanEmail)) {
-      return NextResponse.json({ ok: false, error: "INVALID_EMAIL" }, { status: 400 });
+    // 1) Read body safely
+    let payload: any = {};
+    try {
+      payload = await req.json();
+    } catch {
+      return json(400, { ok: false, error: "BAD_JSON" });
     }
 
-    const toNotify = process.env.NOTIFY_TO_EMAIL;
-    const fromEmail = process.env.FROM_EMAIL;
+    const cleanEmail = String(payload?.email ?? "").trim().toLowerCase();
+    const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail);
+    if (!okEmail) return json(400, { ok: false, error: "INVALID_EMAIL" });
 
-    if (!toNotify || !fromEmail || !process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { ok: false, error: "MISSING_ENV" },
-        { status: 500 }
-      );
+    // 2) Env check (THIS is the #1 cause of random 500s)
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const NOTIFY_TO_EMAIL = process.env.NOTIFY_TO_EMAIL;
+    const FROM_EMAIL = process.env.FROM_EMAIL || "Wahaj <onboarding@resend.dev>";
+
+    if (!RESEND_API_KEY || !NOTIFY_TO_EMAIL) {
+      console.error("MISSING_ENV", {
+        hasKey: !!RESEND_API_KEY,
+        notifyTo: NOTIFY_TO_EMAIL,
+        from: FROM_EMAIL,
+      });
+      return json(500, { ok: false, error: "MISSING_ENV" });
     }
 
-    // 1) Email to your team inbox (info@wahajgold.com)
-    const notifyResult = await resend.emails.send({
-      from: fromEmail,
-      to: toNotify,
+    // 3) Send emails
+    const resend = new Resend(RESEND_API_KEY);
+
+    // A) Notify your team (admin email)
+    const adminResult = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: NOTIFY_TO_EMAIL,
       subject: "New Wahaj Launch Signup",
       html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6">
-          <h2>New email signup</h2>
-          <p><strong>Email:</strong> ${cleanEmail}</p>
-          <p style="color:#666;font-size:12px">Sent from the landing page form.</p>
-        </div>
+        <h2>New email signup</h2>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
       `,
     });
 
-    // 2) Auto-reply to the user (thank you message)
-    // NOTE: Delivery is best after you verify wahajgold.com domain in Resend.
-    const autoReplyResult = await resend.emails.send({
-      from: fromEmail,
+    if ((adminResult as any)?.error) {
+      console.error("RESEND_ADMIN_ERROR", (adminResult as any).error);
+      return json(502, {
+        ok: false,
+        error: "RESEND_ADMIN_ERROR",
+        details: (adminResult as any).error?.message || "Resend send failed",
+      });
+    }
+
+    // B) Auto-reply to the user (optional, but you asked for it)
+    const replyResult = await resend.emails.send({
+      from: FROM_EMAIL,
       to: cleanEmail,
-      subject: "Thanks for joining the Wahaj list",
+      subject: "Thanks for joining the Wahaj launch list",
       html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6">
-          <p>Thanks for joining the Wahaj launch list.</p>
-          <p>We’ll notify you as soon as we launch.</p>
-          <p style="margin-top:16px;color:#666;font-size:12px">
-            If you didn’t request this, you can ignore this email.
-          </p>
-        </div>
+        <p>Thanks for joining the list.</p>
+        <p>We’ll notify you as soon as Wahaj launches.</p>
+        <p>— Wahaj</p>
       `,
     });
 
-    return NextResponse.json({
-      ok: true,
-      notifyId: notifyResult.data?.id ?? null,
-      autoReplyId: autoReplyResult.data?.id ?? null,
-    });
-  } catch (err: any) {
-    // This will show up in Vercel → Functions logs
-    console.error("LEAD API ERROR:", err);
+    if ((replyResult as any)?.error) {
+      // Don’t fail the whole request if auto-reply fails
+      console.error("RESEND_REPLY_ERROR", (replyResult as any).error);
+    }
 
-    return NextResponse.json(
-      { ok: false, error: "SERVER_ERROR", details: err?.message ?? "Unknown error" },
-      { status: 500 }
-    );
+    return json(200, { ok: true });
+  } catch (err: any) {
+    console.error("API_FATAL", err?.message || err, err?.stack);
+    return json(500, {
+      ok: false,
+      error: "SERVER_ERROR",
+      details: err?.message || "Unknown error",
+    });
   }
 }
