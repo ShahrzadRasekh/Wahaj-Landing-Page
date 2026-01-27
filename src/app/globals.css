@@ -817,3 +817,26 @@ button, input{ font: inherit; }
     pointer-events: none !important;
   }
 }
+
+/* ===== MOBILE: remove the maroon plate behind floating images ===== */
+@media (max-width: 640px) {
+
+  /* The actual maroon "plate" is usually productStage's background */
+  .productStage{
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Kill all internal glow/tint layers that sit behind/around the images */
+  .productHalo,
+  .productParticles,
+  .productSweep{
+    display: none !important;
+  }
+
+  /* Make sure nothing clips the floating */
+  .productStage,
+  .layerStack{
+    overflow: visible !important;
+  }
+}
