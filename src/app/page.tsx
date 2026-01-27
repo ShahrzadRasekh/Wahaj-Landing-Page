@@ -263,38 +263,46 @@ if (window.matchMedia("(max-width: 640px)").matches) return;
                 <div className="productParticles" />
 
                 <div className="layerStack">
-                  <div className="layer l3">
-                    <Image
-                      src="/wahaj3.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
-                  </div>
-                  <div className="layer l2">
-                    <Image
-                      src="/wahaj2.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
-                  </div>
-                  <div className="layer l1">
-                    <Image
-                      src="/wahaj1.png"
-                      alt=""
-                      fill
-                      sizes="(max-width: 980px) 320px, 440px"
-                      className="layerImg"
-                      priority
-                    />
-                  </div>
-                </div>
-              </div>
+  <div className="floatWrap fw3">
+    <div className="layer l3">
+      <Image
+        src="/wahaj3.png"
+        alt=""
+        fill
+        sizes="(max-width: 980px) 320px, 440px"
+        className="layerImg"
+        priority
+      />
+    </div>
+  </div>
+
+  <div className="floatWrap fw2">
+    <div className="layer l2">
+      <Image
+        src="/wahaj2.png"
+        alt=""
+        fill
+        sizes="(max-width: 980px) 320px, 440px"
+        className="layerImg"
+        priority
+      />
+    </div>
+  </div>
+
+  <div className="floatWrap fw1">
+    <div className="layer l1">
+      <Image
+        src="/wahaj1.png"
+        alt=""
+        fill
+        sizes="(max-width: 980px) 320px, 440px"
+        className="layerImg"
+        priority
+      />
+    </div>
+  </div>
+</div>
+</div>
             </div>
           </div>
 

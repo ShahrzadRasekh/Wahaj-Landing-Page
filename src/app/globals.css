@@ -830,3 +830,104 @@ button, input{ font: inherit; }
     0 0 12px rgba(188,168,128,.42),
     0 0 26px rgba(188,168,128,.22) !important;
 }
+
+/* ==========================================
+   MOBILE: Center all text + smooth floating
+   Put this at VERY END of globals.css
+   ========================================== */
+   @media (max-width: 640px) {
+
+    /* Force full center alignment everywhere in left column */
+    .heroLeft,
+    .heroLeft * {
+      text-align: center !important;
+    }
+  
+    .heroLeft {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
+      margin: 0 auto !important;
+    }
+  
+    .launchingTopCenter {
+      width: 100% !important;
+      text-align: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  
+    .ctaPanel,
+    .ctaPanelTop,
+    .ctaTitle,
+    .ctaMeta,
+    .copyGroup {
+      width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: center !important;
+    }
+  
+    .notify {
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+    }
+  
+    /* ---------- FLOATING IMAGES (mobile) ---------- */
+    .productStage {
+      position: relative !important;
+      width: min(92vw, 520px) !important;
+      height: 320px !important;
+      margin: 10px auto 0 !important;
+      overflow: visible !important;
+    }
+  
+    .layerStack {
+      position: relative !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: visible !important;
+    }
+  
+    /* wrapper floats (this is the key fix) */
+    .floatWrap {
+      position: absolute !important;
+      inset: 0 !important;
+      will-change: transform;
+      animation: mobileFloat 6.2s ease-in-out infinite;
+    }
+    .floatWrap.fw1 { animation-delay: 0s; }
+    .floatWrap.fw2 { animation-delay: .45s; }
+    .floatWrap.fw3 { animation-delay: .9s; }
+  
+    @keyframes mobileFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); } /* smooth, visible float */
+    }
+  
+    /* stable “stack pose” per layer */
+    .layer {
+      position: absolute !important;
+      inset: 0 !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+    }
+  
+    .layerImg {
+      object-fit: contain !important;
+      object-position: center !important;
+      padding: 14px !important;
+    }
+  
+    /* offsets so all 3 are visible */
+    .layer.l1 { transform: translate(0px, 18px) rotate(-3deg) !important; z-index: 3 !important; }
+    .layer.l2 { transform: translate(-10px, 2px) rotate(2deg) !important; opacity: .92 !important; z-index: 2 !important; }
+    .layer.l3 { transform: translate(10px, -12px) rotate(6deg) !important; opacity: .85 !important; z-index: 1 !important; }
+  
+    /* slightly soften heavy fx on mobile */
+    .productHalo, .productParticles { opacity: .55 !important; }
+  }
+  
