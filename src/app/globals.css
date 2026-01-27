@@ -763,3 +763,57 @@ button, input{ font: inherit; }
     z-index: 2 !important;
   }
 }
+
+/* ===== MOBILE: remove tint behind images (keep lighting behind text only) ===== */
+@media (max-width: 640px) {
+
+  /* 1) Kill the big hero-wide lighting overlay on mobile */
+  .heroShell::before{
+    opacity: 0 !important;
+  }
+
+  /* 2) Ensure hero shell itself is not adding a tinted panel feel */
+  .heroShell{
+    background: transparent !important;
+  }
+
+  /* 3) Add a controlled lighting overlay ONLY behind the left/text area */
+  .heroLeft{
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .heroLeft::before{
+    content: "" !important;
+    position: absolute !important;
+    inset: -18px -14px -18px -14px !important;
+    border-radius: 22px !important;
+    background:
+      radial-gradient(520px 320px at 50% 12%, rgba(91,24,41,.28), transparent 62%),
+      radial-gradient(620px 380px at 10% 52%, rgba(188,168,128,.12), transparent 62%),
+      radial-gradient(620px 380px at 90% 58%, rgba(91,24,41,.20), transparent 62%);
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+
+  /* 4) Make sure the image block sits on clean background (no tint) */
+  .heroRight{
+    position: relative !important;
+    z-index: 3 !important;
+    background: transparent !important;
+  }
+
+  /* optional: if you still see side strips, force clean behind image band */
+  .heroRight::before{
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: -24px !important;
+    bottom: -24px !important;
+    width: 100vw !important;
+    background: var(--ink) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+}
