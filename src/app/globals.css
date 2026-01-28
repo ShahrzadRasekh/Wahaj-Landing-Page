@@ -687,4 +687,73 @@ button, input{ font: inherit; }
       50%    { transform: translate(10px, -18px) rotate(5deg) scale(.98); }
     }
   }
-  
+
+  /* =========================================================
+   MOBILE POLISH: 1-line title, centered button, no plate-shadow
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* 1) Keep "Be notified when Wahaj launches." in ONE line */
+  .ctaTitle{
+    white-space: nowrap !important;
+    /* slightly smaller so it fits all mobile widths */
+    font-size: clamp(16px, 4.2vw, 19px) !important;
+    line-height: 1.15 !important;
+  }
+
+  /* add a bit more space between the title and input */
+  .notify{
+    margin-top: 16px !important;
+  }
+
+  /* 2) Center the button BELOW the email box */
+  .notify{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* centers children */
+    gap: 10px !important;
+  }
+
+  .notify .input{
+    width: 100% !important;
+  }
+
+  .notify .primaryBtn{
+    width: min(240px, 100%) !important; /* not full width, centered */
+    align-self: center !important;
+  }
+
+  /* 3) Remove the "brown box / plate" under floating images */
+  /* keep stage transparent */
+  #mobileImages .productStage,
+  #mobileImages .productStageMobile{
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  /* kill internal glow layers (plate effect) */
+  #mobileImages .productHalo,
+  #mobileImages .productParticles,
+  #mobileImages .productSweep{
+    display: none !important;
+  }
+
+  /* THIS is the main plate-looking shadow on mobile */
+  #mobileImages .layer{
+    filter: none !important;
+  }
+
+  /* keep a softer, cleaner shadow only on the images themselves (optional) */
+  #mobileImages .layerImg{
+    filter: drop-shadow(0 14px 28px rgba(0,0,0,.55)) !important;
+  }
+
+  /* make sure nothing clips the float */
+  #mobileImages,
+  #mobileImages .layerStack,
+  #mobileImages .layerStackMobile{
+    overflow: visible !important;
+  }
+}
+
