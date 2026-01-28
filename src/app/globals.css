@@ -603,157 +603,173 @@ button, input{ font: inherit; }
 /* =========================================================
    MOBILE FINAL: show images + remove brown plate + no clipping
    ========================================================= */
-   @media (max-width: 640px) {
-
-    /* Ensure mobile product section is visible */
-    .desktopOnlyProduct { display: none !important; }
-    .mobileOnlyProduct  { display: block !important; }
-  
-    /* The wrapper should never clip */
-    #mobileImages{
-      position: relative !important;
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 12px auto 0 !important;
-      overflow: visible !important;
-    }
-  
-    /* Remove the brown "plate" behind the floating images */
-    #mobileImages .productStage,
-    #mobileImages .productStageMobile{
-      background: transparent !important;
-      box-shadow: none !important;
-  
-      /* KEY: prevent the “goes under a line” issue */
-      overflow: visible !important;
-    }
-  
-    /* Turn off internal glow layers that look like a tinted panel */
-    #mobileImages .productHalo,
-    #mobileImages .productParticles,
-    #mobileImages .productSweep{
-      display: none !important;
-    }
-  
-    /* Also prevent any parent from clipping the float */
-    #mobileImages .layerStack,
-    #mobileImages .layerStackMobile{
-      overflow: visible !important;
-    }
-  
-    /* Give the floating stack a clean safe band behind it (NOT covering it) */
-    #mobileImages::before{
-      content: "" !important;
-      position: absolute !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-  
-      width: 100% !important;
-      max-width: 520px !important;
-  
-      /* just behind the image area */
-      top: -10px !important;
-      height: 330px !important;
-  
-      background: var(--ink) !important;
-      border-radius: 28px !important;
-  
-      /* IMPORTANT: behind everything */
-      z-index: -1 !important;
-      pointer-events: none !important;
-    }
-  
-    /* Make floating smoother + never “hits” bottom */
-    #mobileImages .l1{
-      animation: mobileFloat1 8.2s ease-in-out infinite !important;
-    }
-    #mobileImages .l2{
-      animation: mobileFloat2 9.0s ease-in-out infinite !important;
-    }
-    #mobileImages .l3{
-      animation: mobileFloat3 9.8s ease-in-out infinite !important;
-    }
-  
-    @keyframes mobileFloat1{
-      0%,100%{ transform: translate(0px, 14px) rotate(-3deg) scale(1.02); }
-      50%    { transform: translate(0px, 6px)  rotate(-2deg) scale(1.02); }
-    }
-    @keyframes mobileFloat2{
-      0%,100%{ transform: translate(-10px, 2px) rotate(2deg) scale(1.00); }
-      50%    { transform: translate(-10px, -8px) rotate(1deg) scale(1.00); }
-    }
-    @keyframes mobileFloat3{
-      0%,100%{ transform: translate(10px, -8px) rotate(6deg) scale(.98); }
-      50%    { transform: translate(10px, -18px) rotate(5deg) scale(.98); }
-    }
-  }
-
   /* =========================================================
-   MOBILE POLISH: 1-line title, centered button, no plate-shadow
+   MOBILE (ONE CLEAN BLOCK ONLY)
+   Fixes:
+   - Perfect centering (equal left/right margins)
+   - CTA title one-line + more spacing
+   - Input height normal (no giant box)
+   - Button centered under input
+   - No brown plate behind floating images
+   - No clipping of paragraphs
    ========================================================= */
 @media (max-width: 640px) {
 
-  /* 1) Keep "Be notified when Wahaj launches." in ONE line */
-  .ctaTitle{
+  /* Hard stop any horizontal overflow (iOS/Android) */
+  html, body, .page {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Equal padding on both sides everywhere */
+  .topbar,
+  .hero,
+  .footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Center shell without “zoom/off-center” feeling */
+  .heroShell,
+  .heroShellNoBorder {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    padding: 28px 16px 26px !important;
+  }
+
+  /* One column grid – centered */
+  .heroGrid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    justify-items: center !important;
+    gap: 16px !important;
+  }
+
+  /* Everything centered in left column */
+  .heroLeft {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+  .heroLeft * {
+    text-align: center !important;
+  }
+
+  /* LAUNCHING SOON */
+  .launchingTopCenter {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     white-space: nowrap !important;
-    /* slightly smaller so it fits all mobile widths */
-    font-size: clamp(16px, 4.2vw, 19px) !important;
-    line-height: 1.15 !important;
+    letter-spacing: .22em !important;
   }
 
-  /* add a bit more space between the title and input */
-  .notify{
-    margin-top: 16px !important;
+  /* ✅ Title must be ONE line on mobile */
+  .ctaTitle {
+    white-space: nowrap !important;
+    font-size: clamp(16px, 4.1vw, 20px) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 14px !important; /* more space before input */
   }
 
-  /* 2) Center the button BELOW the email box */
-  .notify{
+  /* CTA panel centered & safe */
+  .ctaPanel,
+  .ctaPanelTop {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* ✅ Form: input then centered button under it */
+  .notify {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important; /* centers children */
+    align-items: center !important; /* centers button */
     gap: 10px !important;
   }
 
-  .notify .input{
+  /* ✅ Prevent “giant” email input box */
+  .input {
     width: 100% !important;
+    max-width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    line-height: 46px !important;
+    padding: 0 14px !important;
+    font-size: 16px !important; /* iOS: avoids auto-zoom */
+    flex: 0 0 auto !important;
   }
 
-  .notify .primaryBtn{
-    width: min(240px, 100%) !important; /* not full width, centered */
-    align-self: center !important;
+  /* Center button under input */
+  .primaryBtn {
+    width: min(240px, 100%) !important;
   }
 
-  /* 3) Remove the "brown box / plate" under floating images */
-  /* keep stage transparent */
-  #mobileImages .productStage,
-  #mobileImages .productStageMobile{
+  /* Paragraphs: never clip */
+  .copyGroup {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 18px auto 0 !important;
+    padding: 0 4px !important;
+  }
+  .copyP {
+    margin: 14px 0 !important;
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* Show mobile image stack */
+  .desktopOnlyProduct { display: none !important; }
+  .mobileOnlyProduct  { display: block !important; }
+
+  /* Image area centered */
+  .heroRight {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 6px auto 0 !important;
+    display: block !important;
+    position: relative !important;
+    isolation: isolate !important;
+  }
+
+  /* ✅ Remove the brown/maroon plate behind floating images */
+  .productStage {
     background: transparent !important;
     box-shadow: none !important;
-    overflow: visible !important;
+    overflow: visible !important; /* no clipping while floating */
   }
-
-  /* kill internal glow layers (plate effect) */
-  #mobileImages .productHalo,
-  #mobileImages .productParticles,
-  #mobileImages .productSweep{
+  .productHalo,
+  .productParticles,
+  .productSweep {
     display: none !important;
   }
 
-  /* THIS is the main plate-looking shadow on mobile */
-  #mobileImages .layer{
-    filter: none !important;
+  /* Mobile stage sizing + extra breathing room so float never “hits a line” */
+  .productStageMobile {
+    width: min(360px, 92vw) !important;
+    height: 330px !important;      /* a bit taller so float stays clean */
+    margin: 10px auto 0 !important;
+    padding-bottom: 16px !important; /* extra safe bottom space */
   }
 
-  /* keep a softer, cleaner shadow only on the images themselves (optional) */
-  #mobileImages .layerImg{
-    filter: drop-shadow(0 14px 28px rgba(0,0,0,.55)) !important;
-  }
-
-  /* make sure nothing clips the float */
-  #mobileImages,
-  #mobileImages .layerStack,
-  #mobileImages .layerStackMobile{
+  /* Ensure the floating stack is never clipped */
+  .layerStack,
+  .layer {
     overflow: visible !important;
   }
 }
-
