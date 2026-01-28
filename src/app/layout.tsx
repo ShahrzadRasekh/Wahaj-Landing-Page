@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 import "./globals.css";
 import { Tajawal, Playfair_Display } from "next/font/google";
 
@@ -23,13 +24,16 @@ export const metadata: Metadata = {
     "A new platform for buying certified physical gold and silver, built on transparency, responsible sourcing, and secure delivery.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#070506",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${tajawal.variable} ${playfair.variable}`}>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#070506" />
-      </head>
       <body className="appBody">{children}</body>
     </html>
   );

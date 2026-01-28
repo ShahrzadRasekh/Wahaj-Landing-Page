@@ -591,252 +591,120 @@ button, input{ font: inherit; }
 .mobileOnlyProduct{ display:none; }
 .desktopOnlyProduct{ display:flex; }
 
-@media (max-width: 640px) {
-   .heroGrid{
-    grid-template-columns: 1fr;
-    gap: 18px;
+/* =========================================================
+   FINAL MOBILE CENTERING (ONE CLEAN BLOCK)
+   Fixes: off-center, right border clipped, "zoom" feeling
+   ========================================================= */
+   @media (max-width: 640px) {
+
+    /* Hard stop any horizontal overflow on iOS/Android */
+    html, body, .page {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+  
+    /* Main wrappers: equal left/right padding */
+    .topbar,
+    .hero,
+    .footer {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 auto !important;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+  
+    /* Center the hero shell */
+    .heroShell,
+    .heroShellNoBorder {
+      width: 100% !important;
+      max-width: 520px !important;   /* safe mobile bound */
+      margin: 0 auto !important;
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+  
+    /* One-column grid centered */
+    .heroGrid {
+      grid-template-columns: 1fr !important;
+      gap: 18px !important;
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+      justify-items: center !important;
+    }
+  
+    /* Left column centered */
+    .heroLeft {
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+      padding-right: 0 !important;
+      text-align: center !important;
+    }
+    .heroLeft * {
+      text-align: center !important;
+    }
+  
+    /* Prevent headline from pushing layout */
+    .launchingTopCenter {
+      white-space: normal !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      letter-spacing: .22em !important;
+    }
+  
+    /* CTA panel must be perfectly centered and bounded */
+    .ctaPanel,
+    .ctaPanelTop {
+      width: 100% !important;
+      max-width: 520px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  
+    /* Form row must never overflow */
+    .notify {
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      align-items: stretch !important;
+      justify-content: center !important;
+    }
+  
+    .input {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+    }
+  
+    .primaryBtn {
+      width: 100% !important;
+    }
+  
+    /* Right column centered */
+    .heroRight {
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 10px auto 0 !important;
+      display: block !important;
+    }
+  
+    /* Keep mobile images visible and centered */
+    .desktopOnlyProduct { display: none !important; }
+    .mobileOnlyProduct  { display: block !important; }
+  
+    /* Mobile stage sizing (smaller and centered) */
+    .productStageMobile {
+      width: min(360px, 92vw) !important;
+      height: 300px !important;
+      margin: 8px auto 0 !important;
+    }
   }
-
-  .heroLeft{
-    max-width: 520px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .heroLeft *{
-    text-align: center;
-  }
-
-  .notify{
-    justify-content: center;
-  }
-
-  .desktopOnlyProduct{ display:none; }
-  .mobileOnlyProduct{ display:block; }
-
-  /* Slightly smaller title spacing on mobile */
-  .launchingTopCenter{
-    letter-spacing: .22em;
-  }
-
-  /* Reduce CTA feel on small screens */
-  .ctaTitle{ font-size: 20px; }
-}
-
-@media (max-width: 640px) {
-  /* Remove/soften background BELOW the floating images only */
-  #mobileImages {
-    position: relative;
-  }
-
-  /* This overlay starts below the images block and "kills" the background under it */
-  #mobileImages::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-
-    /* start right after the images block */
-    top: 100%;
-
-    /* cover the rest of the page below */
-    height: 200vh;
-
-    /* solid base that matches your page background */
-    background: var(--ink);
-
-    /* optional: soften the transition at the edge */
-    box-shadow: 0 -40px 80px rgba(7, 5, 6, 0.9);
-
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Ensure content stays above the overlay */
-  .heroLeft,
-  .copyGroup,
-  .ctaPanel,
-  .toast {
-    position: relative;
-    z-index: 5;
-  }
-}
-
-/* ===== Mobile: remove maroon plate under floating images + fix layering ===== */
-@media (max-width: 640px) {
-
-  /* Make stacking predictable */
-  .heroRight {
-    position: relative !important;
-    isolation: isolate !important;
-    z-index: 5 !important;
-  }
-
-  /* Remove the stage "plate" background completely on mobile */
-  .heroRight .productStage {
-    background: transparent !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    z-index: 2 !important;
-  }
-
-  /* Turn off glow layers that look like a plate behind the images */
-  .heroRight .productHalo,
-  .heroRight .productParticles,
-  .heroRight .productSweep {
-    display: none !important;
-  }
-
-  /* IMPORTANT: ensure floating wrappers + layers are always above everything */
-  .heroRight .layerStack {
-    position: relative !important;
-    z-index: 3 !important;
-    overflow: visible !important;
-  }
-
-  .heroRight .floatWrap {
-    z-index: 4 !important;
-    position: absolute !important;
-  }
-
-  .heroRight .layer {
-    z-index: 5 !important;
-  }
-
-  /* Optional: if any parent overlay is still bleeding through, "ink patch" BEHIND images only */
-  .heroRight::after {
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    top: -10px !important;
-    width: min(86vw, 360px) !important;
-    height: 300px !important;
-    background: var(--ink) !important;  /* same as page background */
-    border-radius: 28px !important;
-    z-index: 0 !important;             /* stays behind images */
-    pointer-events: none !important;
-  }
-}
-
-/* ===== MOBILE: remove the tinted area behind the floating images only ===== */
-@media (max-width: 640px) {
-
-  /* Make sure this section can host an overlay */
-  .heroRight {
-    position: relative !important;
-    isolation: isolate !important;
-    z-index: 6 !important;
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 12px auto 10px !important;
-  }
-
-  /*
-    This overlay "cleans" the background ONLY behind the images area.
-    It covers the hero's gradient/lighting (the maroon plate) in this band.
-  */
-  .heroRight::before {
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-
-    /* cover full viewport width (removes the side tinted strips) */
-    width: 100vw !important;
-
-    /* cover a bit above/below the images area */
-    top: -18px !important;
-    bottom: -18px !important;
-
-    background: var(--ink) !important; /* same as page background */
-    z-index: 0 !important;
-    pointer-events: none !important;
-  }
-
-  /* keep images above the overlay */
-  .heroRight .productStage,
-  .heroRight .layerStack,
-  .heroRight .floatWrap,
-  .heroRight .layer {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-}
-
-/* ===== MOBILE: remove tint behind images (keep lighting behind text only) ===== */
-@media (max-width: 640px) {
-
-  /* 1) Kill the big hero-wide lighting overlay on mobile */
-  .heroShell::before{
-    opacity: 0 !important;
-  }
-
-  /* 2) Ensure hero shell itself is not adding a tinted panel feel */
-  .heroShell{
-    background: transparent !important;
-  }
-
-  /* 3) Add a controlled lighting overlay ONLY behind the left/text area */
-  .heroLeft{
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  .heroLeft::before{
-    content: "" !important;
-    position: absolute !important;
-    inset: -18px -14px -18px -14px !important;
-    border-radius: 22px !important;
-    background:
-      radial-gradient(520px 320px at 50% 12%, rgba(91,24,41,.28), transparent 62%),
-      radial-gradient(620px 380px at 10% 52%, rgba(188,168,128,.12), transparent 62%),
-      radial-gradient(620px 380px at 90% 58%, rgba(91,24,41,.20), transparent 62%);
-    z-index: -1 !important;
-    pointer-events: none !important;
-  }
-
-  /* 4) Make sure the image block sits on clean background (no tint) */
-  .heroRight{
-    position: relative !important;
-    z-index: 3 !important;
-    background: transparent !important;
-  }
-
-  /* optional: if you still see side strips, force clean behind image band */
-  .heroRight::before{
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    top: -24px !important;
-    bottom: -24px !important;
-    width: 100vw !important;
-    background: var(--ink) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
-  }
-}
-
-/* ===== MOBILE: remove the maroon plate behind floating images ===== */
-@media (max-width: 640px) {
-
-  /* The actual maroon "plate" is usually productStage's background */
-  .productStage{
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
-  /* Kill all internal glow/tint layers that sit behind/around the images */
-  .productHalo,
-  .productParticles,
-  .productSweep{
-    display: none !important;
-  }
-
-  /* Make sure nothing clips the floating */
-  .productStage,
-  .layerStack{
-    overflow: visible !important;
-  }
-}
+  
