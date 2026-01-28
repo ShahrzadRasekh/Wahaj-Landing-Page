@@ -595,116 +595,96 @@ button, input{ font: inherit; }
    FINAL MOBILE CENTERING (ONE CLEAN BLOCK)
    Fixes: off-center, right border clipped, "zoom" feeling
    ========================================================= */
+   /* =========================================================
+   FINAL MOBILE CENTERING (ONE CLEAN BLOCK)
+   Fixes: off-center, right border clipped, zoom feeling
+   + CTA title one-line + better spacing
+   ========================================================= */
+/* =========================================================
+   MOBILE FINAL: show images + remove brown plate + no clipping
+   ========================================================= */
    @media (max-width: 640px) {
 
-    /* Hard stop any horizontal overflow on iOS/Android */
-    html, body, .page {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-  
-    /* Main wrappers: equal left/right padding */
-    .topbar,
-    .hero,
-    .footer {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 auto !important;
-      padding-left: 14px !important;
-      padding-right: 14px !important;
-    }
-  
-    /* Center the hero shell */
-    .heroShell,
-    .heroShellNoBorder {
-      width: 100% !important;
-      max-width: 520px !important;   /* safe mobile bound */
-      margin: 0 auto !important;
-      padding-left: 16px !important;
-      padding-right: 16px !important;
-    }
-  
-    /* One-column grid centered */
-    .heroGrid {
-      grid-template-columns: 1fr !important;
-      gap: 18px !important;
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 0 auto !important;
-      justify-items: center !important;
-    }
-  
-    /* Left column centered */
-    .heroLeft {
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 0 auto !important;
-      padding-right: 0 !important;
-      text-align: center !important;
-    }
-    .heroLeft * {
-      text-align: center !important;
-    }
-  
-    /* Prevent headline from pushing layout */
-    .launchingTopCenter {
-      white-space: normal !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      letter-spacing: .22em !important;
-    }
-  
-    /* CTA panel must be perfectly centered and bounded */
-    .ctaPanel,
-    .ctaPanelTop {
-      width: 100% !important;
-      max-width: 520px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-  
-    /* Form row must never overflow */
-    .notify {
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 0 auto !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 10px !important;
-      align-items: stretch !important;
-      justify-content: center !important;
-    }
-  
-    .input {
-      width: 100% !important;
-      max-width: 100% !important;
-      flex: 0 0 auto !important;
-    }
-  
-    .primaryBtn {
-      width: 100% !important;
-    }
-  
-    /* Right column centered */
-    .heroRight {
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 10px auto 0 !important;
-      display: block !important;
-    }
-  
-    /* Keep mobile images visible and centered */
+    /* Ensure mobile product section is visible */
     .desktopOnlyProduct { display: none !important; }
     .mobileOnlyProduct  { display: block !important; }
   
-    /* Mobile stage sizing (smaller and centered) */
-    .productStageMobile {
-      width: min(360px, 92vw) !important;
-      height: 300px !important;
-      margin: 8px auto 0 !important;
+    /* The wrapper should never clip */
+    #mobileImages{
+      position: relative !important;
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 12px auto 0 !important;
+      overflow: visible !important;
+    }
+  
+    /* Remove the brown "plate" behind the floating images */
+    #mobileImages .productStage,
+    #mobileImages .productStageMobile{
+      background: transparent !important;
+      box-shadow: none !important;
+  
+      /* KEY: prevent the “goes under a line” issue */
+      overflow: visible !important;
+    }
+  
+    /* Turn off internal glow layers that look like a tinted panel */
+    #mobileImages .productHalo,
+    #mobileImages .productParticles,
+    #mobileImages .productSweep{
+      display: none !important;
+    }
+  
+    /* Also prevent any parent from clipping the float */
+    #mobileImages .layerStack,
+    #mobileImages .layerStackMobile{
+      overflow: visible !important;
+    }
+  
+    /* Give the floating stack a clean safe band behind it (NOT covering it) */
+    #mobileImages::before{
+      content: "" !important;
+      position: absolute !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+  
+      width: 100% !important;
+      max-width: 520px !important;
+  
+      /* just behind the image area */
+      top: -10px !important;
+      height: 330px !important;
+  
+      background: var(--ink) !important;
+      border-radius: 28px !important;
+  
+      /* IMPORTANT: behind everything */
+      z-index: -1 !important;
+      pointer-events: none !important;
+    }
+  
+    /* Make floating smoother + never “hits” bottom */
+    #mobileImages .l1{
+      animation: mobileFloat1 8.2s ease-in-out infinite !important;
+    }
+    #mobileImages .l2{
+      animation: mobileFloat2 9.0s ease-in-out infinite !important;
+    }
+    #mobileImages .l3{
+      animation: mobileFloat3 9.8s ease-in-out infinite !important;
+    }
+  
+    @keyframes mobileFloat1{
+      0%,100%{ transform: translate(0px, 14px) rotate(-3deg) scale(1.02); }
+      50%    { transform: translate(0px, 6px)  rotate(-2deg) scale(1.02); }
+    }
+    @keyframes mobileFloat2{
+      0%,100%{ transform: translate(-10px, 2px) rotate(2deg) scale(1.00); }
+      50%    { transform: translate(-10px, -8px) rotate(1deg) scale(1.00); }
+    }
+    @keyframes mobileFloat3{
+      0%,100%{ transform: translate(10px, -8px) rotate(6deg) scale(.98); }
+      50%    { transform: translate(10px, -18px) rotate(5deg) scale(.98); }
     }
   }
   

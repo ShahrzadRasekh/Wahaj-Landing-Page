@@ -286,7 +286,7 @@ if (!res.ok || !data?.ok) {
               </div>
 
               {/* ✅ MOBILE IMAGES: after email box, before paragraphs */}
-              <div className="mobileOnlyProduct" aria-hidden="true">
+              <div className="mobileOnlyProduct" aria-hidden="true" id="mobileImages">
                 <ProductStack mode="mobile" />
               </div>
 
@@ -306,7 +306,7 @@ if (!res.ok || !data?.ok) {
             </div>
 
             {/* ✅ DESKTOP IMAGES: right column */}
-            <div className="heroRight desktopOnlyProduct" aria-hidden="true" id="mobileImages">
+            <div className="heroRight desktopOnlyProduct" aria-hidden="true">
               <ProductStack mode="desktop" stageRef={stageRefDesktop} />
             </div>
           </div>
