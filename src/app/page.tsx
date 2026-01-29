@@ -20,7 +20,33 @@ function useScrollVars() {
   }, []);
 }
 
+/** ✅ Reliable mobile detection (prevents “double stacks” forever) */
+function useIsMobile(breakpointPx = 640) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setIsMobile(mq.matches);
+
+    update();
+    // Safari compatibility: addEventListener may not exist in older versions
+    if (mq.addEventListener) mq.addEventListener("change", update);
+    else mq.addListener(update);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", update);
+      else mq.removeListener(update);
+    };
+  }, [breakpointPx]);
+
+  return isMobile;
+}
+
 export default function Page() {
+  const isMobile = useIsMobile(640);
+
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,6 +65,8 @@ export default function Page() {
 
   // Desktop parallax only
   useEffect(() => {
+    if (isMobile) return; // ✅ never run parallax on mobile
+
     const el = stageRefDesktop.current;
     if (!el) return;
 
@@ -78,10 +106,12 @@ export default function Page() {
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);
     };
-  }, []);
+  }, [isMobile]);
 
-  // Background mouse trail
+  // Background mouse trail (desktop only - optional)
   useEffect(() => {
+    if (isMobile) return;
+
     const wrap = trailRef.current;
     if (!wrap) return;
 
@@ -126,7 +156,7 @@ export default function Page() {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
     };
-  }, []);
+  }, [isMobile]);
 
   function showToast(msg: string) {
     setToast(msg);
@@ -179,12 +209,17 @@ export default function Page() {
     stageRef?: React.RefObject<HTMLDivElement | null>;
   }) => {
     const stageClass =
-      mode === "desktop" ? "productStage productStageDesktop" : "productStage productStageMobile";
+      mode === "desktop"
+        ? "productStage productStageDesktop"
+        : "productStage productStageMobile";
     const stackClass =
-      mode === "desktop" ? "layerStack layerStackDesktop" : "layerStack layerStackMobile";
+      mode === "desktop"
+        ? "layerStack layerStackDesktop"
+        : "layerStack layerStackMobile";
 
     return (
       <div className={stageClass} ref={stageRef}>
+        {/* these are visually removed on mobile by CSS */}
         <div className="productHalo" />
         <div className="productSweep" />
         <div className="productParticles" />
@@ -238,7 +273,8 @@ export default function Page() {
         <div className="bgGrain" />
       </div>
 
-      <div ref={trailRef} className="trailLayer" aria-hidden="true" />
+      {/* Trail is desktop only now (safe) */}
+      {!isMobile && <div ref={trailRef} className="trailLayer" aria-hidden="true" />}
 
       <header className="topbar topbarSimple">
         <div className="brand introLine">
@@ -284,10 +320,12 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* ✅ MOBILE IMAGES: only here (single instance) */}
-              <div className="mobileOnlyProduct" aria-hidden="true" id="mobileImages">
-                <ProductStack mode="mobile" />
-              </div>
+              {/* ✅ Render the product stack only ONCE on mobile */}
+              {isMobile && (
+                <div aria-hidden="true" id="mobileImages" style={{ width: "100%" }}>
+                  <ProductStack mode="mobile" />
+                </div>
+              )}
 
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
@@ -304,10 +342,12 @@ export default function Page() {
               </div>
             </div>
 
-            {/* ✅ DESKTOP IMAGES only */}
-            <div className="heroRight desktopOnlyProduct" aria-hidden="true">
-              <ProductStack mode="desktop" stageRef={stageRefDesktop} />
-            </div>
+            {/* ✅ Render the product stack only ONCE on desktop */}
+            {!isMobile && (
+              <div className="heroRight" aria-hidden="true">
+                <ProductStack mode="desktop" stageRef={stageRefDesktop} />
+              </div>
+            )}
           </div>
 
           <div className="scrollHint" aria-hidden="true">

@@ -593,97 +593,86 @@ button, input{ font: inherit; }
 .desktopOnlyProduct{ display:flex; }
 
 /* =========================================================
-   MOBILE: PERFECT CENTER CTA PANEL (fix off-right)
-   - one clean dark layer behind CTA only
-   - input height normal
-   ========================================================= */
-/* =========================================================
-   MOBILE (ONE CLEAN BLOCK ONLY)
-   Fixes:
-   - Perfect centering on ALL phones (Galaxy S8, iPhone 12, 14 Pro Max, etc.)
-   - CTA panel centered (equal left/right)
-   - No “email input becomes tall”
-   - Button centered under input
-   - No brown plate behind floating images
+   MOBILE FINAL (KEEP THIS ONE ONLY)
+   - Perfect centering on all phones
+   - CTA title ONE line
+   - Input height locked (no tall bug)
+   - Remove extra hero overlays on mobile (keep CTA panel only)
+   - Remove maroon plate behind images
    ========================================================= */
    @media (max-width: 640px) {
 
-    /* 0) Hard stop horizontal drift */
+    /* 1) Hard-stop horizontal drift */
     html, body, .page {
       width: 100% !important;
       max-width: 100% !important;
       overflow-x: hidden !important;
     }
   
-    /* 1) Equal side padding everywhere (the #1 cause of “off-center” look) */
+    /* 2) Equal left/right padding (safe-area aware) */
     .topbar,
     .hero,
     .footer {
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 auto !important;
-      padding-left: clamp(12px, 4vw, 18px) !important;
-      padding-right: clamp(12px, 4vw, 18px) !important;
+      padding-left: max(16px, env(safe-area-inset-left)) !important;
+      padding-right: max(16px, env(safe-area-inset-right)) !important;
     }
   
-    /* 2) Remove extra shell overlays on mobile (keeps only the CTA panel look) */
-    .heroShell::before { opacity: 0 !important; }
+    /* 3) Remove extra “layers/shadows” on mobile (these cause off-right feel) */
     .heroShell {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
+      padding: 22px 0 18px !important; /* padding handled by .hero sides */
+      overflow: visible !important;
+    }
+    .heroShell::before {
+      display: none !important; /* IMPORTANT: removes big maroon overlay layer */
     }
   
-    /* 3) One-column grid centered */
+    /* 4) One column and centered */
     .heroGrid {
       grid-template-columns: 1fr !important;
       width: 100% !important;
-      margin: 0 auto !important;
       justify-items: center !important;
-      gap: 16px !important;
+      gap: 14px !important;
     }
   
-    /* 4) Hero left column: force exact center */
     .heroLeft {
       width: 100% !important;
-      max-width: min(520px, 92vw) !important;
+      max-width: 520px !important;
       margin: 0 auto !important;
-      padding: 0 !important;
       text-align: center !important;
     }
-    .heroLeft * { text-align: center !important; }
-  
-    /* 5) LAUNCHING SOON spacing */
-    .launchingTopCenter {
-      width: 100% !important;
-      margin: 0 auto 14px !important;
-      letter-spacing: .22em !important;
-      white-space: nowrap !important;
+    .heroLeft * {
+      text-align: center !important;
     }
   
-    /* 6) CTA PANEL: this is the “dark box” that must be perfectly centered */
+    /* 5) CTA panel: centered dark layer ONLY */
     .ctaPanel,
     .ctaPanelTop {
       width: 100% !important;
       max-width: min(520px, 92vw) !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
+      margin: 0 auto !important;
       padding: 16px !important;
       border-radius: 22px !important;
       background: rgba(7,5,6,.55) !important;
       border: 1px solid rgba(239,239,239,.10) !important;
-      box-shadow: 0 18px 60px rgba(0,0,0,.45) !important;
+      box-shadow: 0 18px 55px rgba(0,0,0,.55) !important;
+      backdrop-filter: blur(10px) !important;
     }
   
-    /* Title can wrap if needed on smaller devices (prevents pushing layout off) */
+    /* 6) CTA title must be ONE line on all mobiles */
     .ctaTitle {
-      font-size: clamp(16px, 4.2vw, 20px) !important;
+      white-space: nowrap !important;
+      font-size: clamp(14px, 4.2vw, 18px) !important; /* shrinks on small phones */
       line-height: 1.2 !important;
-      margin: 0 auto 12px !important;
-      white-space: normal !important;  /* IMPORTANT for iPhone 12 / Galaxy S8 */
+      margin-bottom: 12px !important;
     }
   
-    /* 7) Form layout: input then centered button */
+    /* 7) Form layout + button centered */
     .notify {
       width: 100% !important;
       margin: 0 auto !important;
@@ -693,57 +682,44 @@ button, input{ font: inherit; }
       gap: 10px !important;
     }
   
-    /* 8) Email input: NEVER tall (stable across devices) */
+    /* 8) Input height LOCK (prevents tall bug) */
     .input {
       width: 100% !important;
-      max-width: 100% !important;
-  
       height: 46px !important;
       min-height: 46px !important;
-  
+      max-height: 46px !important;
       padding: 0 14px !important;
-      padding-block: 0 !important;
-  
-      line-height: normal !important;   /* key: prevents “tall again” */
-      font-size: 16px !important;       /* key: iOS prevents zoom */
-      flex: 0 0 auto !important;
+      line-height: 1.2 !important;
+      font-size: 16px !important; /* prevents iOS zoom */
+      display: block !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
     }
   
-    /* Button centered under input */
     .primaryBtn {
       width: min(240px, 100%) !important;
-      margin: 0 auto !important;
     }
   
-    /* CTA meta text stays inside */
-    .ctaMeta {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin-top: 10px !important;
-    }
-  
-    /* 9) Paragraphs: never clip, always centered */
+    /* 9) Paragraphs never clip */
     .copyGroup {
       width: 100% !important;
       max-width: min(520px, 92vw) !important;
-      margin: 18px auto 0 !important;
-      padding: 0 !important;
+      margin: 16px auto 0 !important;
     }
     .copyP {
       font-size: 16px !important;
-      line-height: 1.75 !important;
       overflow-wrap: anywhere !important;
     }
   
-    /* 10) Mobile product stack ON, desktop product stack OFF */
+    /* 10) MOBILE images (keep only the center one) */
+    .mobileOnlyProduct { display: block !important; }
     .desktopOnlyProduct { display: none !important; }
-    .mobileOnlyProduct  { display: block !important; }
   
-    /* 11) Remove brown/maroon “plate” behind floating images on mobile */
-    .heroRight,
+    /* 11) Remove maroon plate behind floating images */
     .productStage {
       background: transparent !important;
       box-shadow: none !important;
+      overflow: visible !important;
     }
     .productHalo,
     .productParticles,
@@ -751,17 +727,10 @@ button, input{ font: inherit; }
       display: none !important;
     }
   
-    /* 12) Image stage sizing: room for floating without “hitting a line” */
     .productStageMobile {
       width: min(360px, 92vw) !important;
       height: 320px !important;
       margin: 10px auto 0 !important;
-      overflow: visible !important;
-    }
-  
-    .layerStack,
-    .layer {
-      overflow: visible !important;
     }
   }
   
