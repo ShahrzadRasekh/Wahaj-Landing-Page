@@ -592,145 +592,137 @@ button, input{ font: inherit; }
 .mobileOnlyProduct{ display:none; }
 .desktopOnlyProduct{ display:flex; }
 
-/* =========================================================
-   MOBILE FINAL (KEEP THIS ONE ONLY)
-   - Perfect centering on all phones
-   - CTA title ONE line
-   - Input height locked (no tall bug)
-   - Remove extra hero overlays on mobile (keep CTA panel only)
-   - Remove maroon plate behind images
-   ========================================================= */
-   @media (max-width: 640px) {
+@media (max-width: 640px) {
 
-    /* 1) Hard-stop horizontal drift */
-    html, body, .page {
-      width: 100% !important;
-      max-width: 100% !important;
-      overflow-x: hidden !important;
-    }
-  
-    /* 2) Equal left/right padding (safe-area aware) */
-    :root{
-      --mPad: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
-    }
-  
-    .topbar,
-    .hero,
-    .footer {
-      padding-left: var(--mPad) !important;
-      padding-right: var(--mPad) !important;
-    }
-  
-    /* 3) Remove extra “layers/shadows” on mobile (these cause off-right feel) */
-    .heroShell {
-      background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 22px 0 18px !important; /* padding handled by .hero sides */
-      overflow: visible !important;
-    }
-    .heroShell::before {
-      display: none !important; /* IMPORTANT: removes big maroon overlay layer */
-    }
-  
-    /* 4) One column and centered */
-    .heroGrid {
-      grid-template-columns: 1fr !important;
-      width: 100% !important;
-      justify-items: center !important;
-      gap: 14px !important;
-    }
-  
-    .heroLeft {
-      width: 100% !important;
-      max-width: 520px !important;
-      margin: 0 auto !important;
-      text-align: center !important;
-    }
-    .heroLeft * {
-      text-align: center !important;
-    }
-  
-    /* 5) CTA panel: centered dark layer ONLY */
-/* Keep CTA panel centered inside that equal padding */
-.ctaPanel,
-.ctaPanelTop {
-  width: 100% !important;
-  max-width: 520px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  box-sizing: border-box !important;
-}
-  
-    /* 6) CTA title must be ONE line on all mobiles */
-    .ctaTitle {
-      white-space: nowrap !important;
-      font-size: clamp(14px, 4.2vw, 18px) !important; /* shrinks on small phones */
-      line-height: 1.2 !important;
-      margin-bottom: 12px !important;
-    }
-  
-    /* 7) Form layout + button centered */
-    .notify {
-      width: 100% !important;
-      margin: 0 auto !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 10px !important;
-    }
-  
-    /* 8) Input height LOCK (prevents tall bug) */
-    .input {
-      width: 100% !important;
-      height: 46px !important;
-      min-height: 46px !important;
-      max-height: 46px !important;
-      padding: 0 14px !important;
-      line-height: 1.2 !important;
-      font-size: 16px !important; /* prevents iOS zoom */
-      display: block !important;
-      -webkit-appearance: none !important;
-      appearance: none !important;
-    }
-  
-    .primaryBtn {
-      width: min(240px, 100%) !important;
-    }
-  
-    /* 9) Paragraphs never clip */
-    .copyGroup {
-      width: 100% !important;
-      max-width: min(520px, 92vw) !important;
-      margin: 16px auto 0 !important;
-    }
-    .copyP {
-      font-size: 16px !important;
-      overflow-wrap: anywhere !important;
-    }
-  
-    /* 10) MOBILE images (keep only the center one) */
-    .mobileOnlyProduct { display: block !important; }
-    .desktopOnlyProduct { display: none !important; }
-  
-    /* 11) Remove maroon plate behind floating images */
-    .productStage {
-      background: transparent !important;
-      box-shadow: none !important;
-      overflow: visible !important;
-    }
-    .productHalo,
-    .productParticles,
-    .productSweep {
-      display: none !important;
-    }
-  
-    .productStageMobile {
-      width: min(360px, 92vw) !important;
-      height: 320px !important;
-      margin: 10px auto 0 !important;
-    }
-    .topbar { padding-top: 14px !important; }  /* was 18px */
-  .hero   { padding-top: 18px !important; }  /* was 26px */
+  /* 1) Hard-stop any horizontal drift */
+  html, body, .page {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
-  
+
+  /*
+    2) TRUE equal side padding (safe-area aware)
+    IMPORTANT: we must NOT use one var for both left/right when safe-area differs.
+    We use left and right separately to force equal visible spacing.
+  */
+  .topbar,
+  .hero,
+  .footer {
+    padding-left: calc(16px + env(safe-area-inset-left)) !important;
+    padding-right: calc(16px + env(safe-area-inset-right)) !important;
+  }
+
+  /* 3) Slightly pull content up (small change only) */
+  .topbar { padding-top: 14px !important; }  /* was 18px */
+  .hero   { padding-top: 20px !important; }  /* was 26px */
+
+  /* 4) Remove extra layers on mobile ONLY (prevents off-right feel) */
+  .heroShell {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 18px 0 16px !important; /* side padding comes from .hero */
+    overflow: visible !important;
+  }
+  .heroShell::before {
+    display: none !important;
+  }
+
+  /* 5) One column grid – centered */
+  .heroGrid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    justify-items: center !important;
+    gap: 14px !important;
+  }
+
+  .heroLeft {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+  .heroLeft * { text-align: center !important; }
+
+  /* 6) CTA panel: perfect centering + equal margins */
+  .ctaPanel,
+  .ctaPanelTop {
+    width: 100% !important;
+    max-width: 520px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 7) CTA title: force one line on ALL phones */
+  .ctaTitle {
+    white-space: nowrap !important;
+    font-size: clamp(14px, 4.0vw, 18px) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 14px !important; /* a bit more breathing room */
+  }
+
+  /* 8) Form layout: input then centered button */
+  .notify {
+    width: 100% !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  /* 9) LOCK input height (prevents the tall bug permanently) */
+  .input {
+    width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    padding: 0 14px !important;
+    line-height: 46px !important;      /* key: stable height across devices */
+    font-size: 16px !important;        /* prevents iOS zoom */
+    display: block !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+
+  .primaryBtn {
+    width: min(240px, 100%) !important;
+  }
+
+  /* 10) Paragraphs: never clip + wrap safely on all devices */
+  .copyGroup {
+    width: 100% !important;
+    max-width: 520px !important;       /* keep same bound as CTA */
+    margin: 16px auto 0 !important;
+  }
+
+  .copyP {
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+  }
+
+  /* 11) MOBILE images: keep ONLY the center one */
+  .mobileOnlyProduct { display: block !important; }
+  .desktopOnlyProduct { display: none !important; }
+
+  /* 12) Remove maroon plate behind floating images (mobile only) */
+  .productStage {
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  .productHalo,
+  .productParticles,
+  .productSweep { display: none !important; }
+
+  .productStageMobile {
+    width: min(360px, 92vw) !important;
+    height: 320px !important;
+    margin: 10px auto 0 !important;
+  }
+}
