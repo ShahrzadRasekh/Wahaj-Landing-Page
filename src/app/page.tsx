@@ -179,18 +179,12 @@ export default function Page() {
     stageRef?: React.RefObject<HTMLDivElement | null>;
   }) => {
     const stageClass =
-      mode === "desktop"
-        ? "productStage productStageDesktop"
-        : "productStage productStageMobile";
-
+      mode === "desktop" ? "productStage productStageDesktop" : "productStage productStageMobile";
     const stackClass =
-      mode === "desktop"
-        ? "layerStack layerStackDesktop"
-        : "layerStack layerStackMobile";
+      mode === "desktop" ? "layerStack layerStackDesktop" : "layerStack layerStackMobile";
 
     return (
       <div className={stageClass} ref={stageRef}>
-        {/* Desktop glow layers (hidden on mobile via CSS) */}
         <div className="productHalo" />
         <div className="productSweep" />
         <div className="productParticles" />
@@ -263,9 +257,7 @@ export default function Page() {
         <div className="heroShell heroShellNoBorder">
           <div className="heroGrid">
             <div className="heroLeft">
-              <div className="launchingTopCenter introLine introDelay1">
-                LAUNCHING SOON
-              </div>
+              <div className="launchingTopCenter introLine introDelay1">LAUNCHING SOON</div>
 
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
                 <div className="ctaTitle">Be notified when Wahaj launches.</div>
@@ -292,7 +284,7 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* ✅ MOBILE stack: only once */}
+              {/* ✅ MOBILE IMAGES: only here (single instance) */}
               <div className="mobileOnlyProduct" aria-hidden="true" id="mobileImages">
                 <ProductStack mode="mobile" />
               </div>
@@ -300,20 +292,19 @@ export default function Page() {
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
                   A new platform for buying{" "}
-                  <span className="accentInline">certified physical gold and silver</span>, built
-                  on transparency, responsible sourcing, and secure delivery.
+                  <span className="accentInline">certified physical gold and silver</span>, built on transparency,
+                  responsible sourcing, and secure delivery.
                 </p>
 
                 <p className="copyP">
                   Designed for investors and buyers who value{" "}
-                  <span className="shinyWord">trust</span>,{" "}
-                  <span className="shinyWord">quality</span>, and{" "}
+                  <span className="shinyWord">trust</span>, <span className="shinyWord">quality</span>, and{" "}
                   <span className="shinyWord">clarity</span>.
                 </p>
               </div>
             </div>
 
-            {/* ✅ DESKTOP stack: right column only */}
+            {/* ✅ DESKTOP IMAGES only */}
             <div className="heroRight desktopOnlyProduct" aria-hidden="true">
               <ProductStack mode="desktop" stageRef={stageRefDesktop} />
             </div>

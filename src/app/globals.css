@@ -217,16 +217,18 @@ button, input{ font: inherit; }
   background: rgba(7,5,6,.45);
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 70px rgba(0,0,0,.45);
+  position: relative;
 }
+
 .ctaPanelTop{
   margin-top: 10px !important;
   margin-bottom: 26px;
 }
 
-/* ✅ Playfair Display Bold for this sentence */
+/* Playfair Display Bold sentence */
 .ctaTitle{
   font-family: var(--font-display), serif;
-  font-weight: 700; /* Playfair bold look */
+  font-weight: 700;
   font-size: 22px;
   line-height: 1.2;
   letter-spacing: .01em;
@@ -250,6 +252,7 @@ button, input{ font: inherit; }
   color: var(--paper);
   padding: 0 14px;
   outline: none;
+  line-height: normal;
 }
 .input:focus{
   border-color: rgba(188,168,128,.55);
@@ -336,7 +339,7 @@ button, input{ font: inherit; }
   height: 440px;
 }
 
-/* Mobile stage size (smaller) */
+/* Mobile stage size */
 .productStageMobile{
   width: min(360px, 92vw);
   height: 300px;
@@ -409,7 +412,6 @@ button, input{ font: inherit; }
   perspective: 1000px;
 }
 
-/* Desktop: parallax tilt + original float */
 .layerStackDesktop{
   transform: translate(-50%,-50%)
     rotateX(var(--rx, 0deg))
@@ -420,7 +422,6 @@ button, input{ font: inherit; }
   transition: transform 60ms linear;
 }
 
-/* Mobile: no mouse tilt, just centered */
 .layerStackMobile{
   transform: translate(-50%,-50%);
 }
@@ -473,7 +474,7 @@ button, input{ font: inherit; }
   100%{ transform: translate3d(-44px,34px,-30px) rotateZ(-12deg) rotateX(10deg) scale(1.00); }
 }
 
-/* Mobile offsets + smooth float (smaller + safe) */
+/* Mobile offsets + smooth float */
 .productStageMobile .layerImg{
   padding: 10px;
 }
@@ -588,208 +589,176 @@ button, input{ font: inherit; }
 }
 
 /* Show/Hide image stacks */
-.mobileOnlyProduct{ display:none !important; }
-.desktopOnlyProduct{ display:flex !important; }
+.mobileOnlyProduct{ display:none; }
+.desktopOnlyProduct{ display:flex; }
 
 /* =========================================================
-   FINAL MOBILE CENTERING (ONE CLEAN BLOCK)
-   Fixes: off-center, right border clipped, "zoom" feeling
-   ========================================================= */
-   /* =========================================================
-   FINAL MOBILE CENTERING (ONE CLEAN BLOCK)
-   Fixes: off-center, right border clipped, zoom feeling
-   + CTA title one-line + better spacing
-   ========================================================= */
-/* =========================================================
-   MOBILE FINAL: show images + remove brown plate + no clipping
-   ========================================================= */
-  /* =========================================================
-   MOBILE (ONE CLEAN BLOCK ONLY)
-   Fixes:
-   - Perfect centering (equal left/right margins)
-   - CTA title one-line + more spacing
-   - Input height normal (no giant box)
-   - Button centered under input
-   - No brown plate behind floating images
-   - No clipping of paragraphs
+   MOBILE: PERFECT CENTER CTA PANEL (fix off-right)
+   - one clean dark layer behind CTA only
+   - input height normal
    ========================================================= */
 @media (max-width: 640px) {
 
-  /* Hard stop any horizontal overflow (iOS/Android) */
-  html, body, .page {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
+  html, body, .page{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
   }
 
-  /* Equal padding on both sides everywhere */
-  .topbar,
-  .hero,
-  .footer {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+  .topbar, .hero, .footer{
+    width:100%;
+    max-width:100%;
+    margin:0 auto;
+    padding-left:16px;
+    padding-right:16px;
   }
 
-  /* Center shell without “zoom/off-center” feeling */
-  .heroShell,
-  .heroShellNoBorder {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 0 auto !important;
-    padding: 28px 16px 26px !important;
+  /* Remove extra hero overlays on mobile to avoid “off/zoom” feeling */
+  .heroShell::before{ opacity: 0; }
+
+  .heroShell, .heroShellNoBorder{
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    padding: 28px 16px 26px;
   }
 
-  /* One column grid – centered */
-  .heroGrid {
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 0 auto !important;
-    justify-items: center !important;
-    gap: 16px !important;
+  .heroGrid{
+    grid-template-columns: 1fr;
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    justify-items:center;
+    gap:16px;
   }
 
-  /* Everything centered in left column */
-  .heroLeft {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    text-align: center !important;
+  /* THIS is the important centering fix:
+     make left column a true centered stack so every child is aligned */
+  .heroLeft{
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    padding:0;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
-  .heroLeft * {
-    text-align: center !important;
+  .heroLeft *{ text-align:center; }
+
+  .launchingTopCenter{
+    width:100%;
+    white-space: nowrap;
+    letter-spacing:.22em;
+    margin-left:auto;
+    margin-right:auto;
   }
 
-  /* LAUNCHING SOON */
-  .launchingTopCenter {
-    width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    white-space: nowrap !important;
-    letter-spacing: .22em !important;
+  /* Title one-line + more space */
+  .ctaTitle{
+    white-space: nowrap;
+    font-size: clamp(16px, 4.1vw, 20px);
+    margin-bottom: 14px;
   }
 
-  /* ✅ Title must be ONE line on mobile */
-  .ctaTitle {
-    white-space: nowrap !important;
-    font-size: clamp(16px, 4.1vw, 20px) !important;
-    line-height: 1.2 !important;
-    margin-bottom: 14px !important; /* more space before input */
+  /* CTA panel: force perfect center */
+  .ctaPanel, .ctaPanelTop{
+    width:100%;
+    max-width:520px;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    margin-inline:auto !important;
+    left:0;
+    right:0;
   }
 
-  /* CTA panel centered & safe */
-  .ctaPanel,
-  .ctaPanelTop {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  /* One clean dark “card” behind CTA only (centered) */
+  .ctaPanel::before{
+    content:"";
+    position:absolute;
+    inset:-14px;
+    border-radius: 26px;
+    background: rgba(7,5,6,.35);
+    box-shadow: 0 24px 90px rgba(0,0,0,.55);
+    z-index:-1;
+    pointer-events:none;
   }
 
-  /* ✅ Form: input then centered button under it */
-  .notify {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important; /* centers button */
-    gap: 10px !important;
+  /* Form: input full width, button centered under it */
+  .notify{
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
   }
 
-  /* ✅ Prevent “giant” email input box */
-  .input {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 46px !important;
-    min-height: 46px !important;
-    line-height: 46px !important;
-    padding: 0 14px !important;
-    font-size: 16px !important; /* iOS: avoids auto-zoom */
-    flex: 0 0 auto !important;
+  /* Keep input height NORMAL (no tall box) */
+    /* Keep input height NORMAL (never tall on iOS) */
+    .input{
+      width: 100% !important;
+      max-width: 100% !important;
+  
+      height: 46px !important;
+      min-height: 46px !important;
+      max-height: 46px !important;
+  
+      padding: 0 14px !important;
+      line-height: 46px !important;     /* forces text vertically centered */
+      font-size: 16px !important;       /* prevents iOS zoom */
+      flex: 0 0 auto !important;
+  
+      /* extra safety: avoid iOS weird inner sizing */
+      -webkit-appearance: none !important;
+      appearance: none !important;
+    }
+  
+
+  .primaryBtn{
+    width: min(240px, 100%);
+    margin: 0 auto;
   }
 
-  /* Center button under input */
-  .primaryBtn {
-    width: min(240px, 100%) !important;
+  .copyGroup{
+    width:100%;
+    max-width:520px;
+    margin:18px auto 0;
+    padding:0 4px;
+  }
+  .copyP{
+    font-size:16px;
+    overflow-wrap:anywhere;
   }
 
-  /* Paragraphs: never clip */
-  .copyGroup {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 18px auto 0 !important;
-    padding: 0 4px !important;
-  }
-  .copyP {
-    margin: 14px 0 !important;
-    font-size: 16px !important;
-    line-height: 1.75 !important;
-    word-break: normal !important;
-    overflow-wrap: anywhere !important;
-  }
+  /* Ensure only ONE image stack on mobile */
+  .desktopOnlyProduct{ display:none !important; }
+  .mobileOnlyProduct{ display:block !important; }
 
-  /* Show mobile image stack */
-  .desktopOnlyProduct { display: none !important; }
-  .mobileOnlyProduct  { display: block !important; }
-
-  /* Image area centered */
-  .heroRight {
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: 6px auto 0 !important;
-    display: block !important;
-    position: relative !important;
-    isolation: isolate !important;
+  /* Remove any “plate/tint” behind images on mobile */
+  .heroRight{
+    width:100%;
+    max-width:520px;
+    margin: 6px auto 0;
+    display:block;
+    position:relative;
+    isolation:isolate;
   }
 
-  /* ✅ Remove the brown/maroon plate behind floating images */
-  .productStage {
+  .productStage{
     background: transparent !important;
     box-shadow: none !important;
-    overflow: visible !important; /* no clipping while floating */
-  }
-  .productHalo,
-  .productParticles,
-  .productSweep {
-    display: none !important;
-  }
-
-  /* Mobile stage sizing + extra breathing room so float never “hits a line” */
-  .productStageMobile {
-    width: min(360px, 92vw) !important;
-    height: 330px !important;      /* a bit taller so float stays clean */
-    margin: 10px auto 0 !important;
-    padding-bottom: 16px !important; /* extra safe bottom space */
-  }
-
-  /* Ensure the floating stack is never clipped */
-  .layerStack,
-  .layer {
     overflow: visible !important;
   }
-}
-
-/* ================================
-   MOBILE: show ONLY center images
-   (hide desktop stack completely)
-   ================================ */
-   @media (max-width: 640px) {
-    .desktopOnlyProduct {
-      display: none !important;
-    }
-  
-    .mobileOnlyProduct {
-      display: block !important;
-    }
-  
-    /* Extra safety: if heroRight exists, hide it on mobile */
-    .heroRight {
-      display: none !important;
-    }
+  .productHalo, .productParticles, .productSweep{
+    display:none !important;
   }
-  
+
+  .productStageMobile{
+    width: min(360px, 92vw);
+    height: 330px; /* breathing room so float never “hits” bottom */
+    margin: 10px auto 0;
+    padding-bottom: 16px;
+  }
+}
