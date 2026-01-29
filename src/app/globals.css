@@ -610,14 +610,15 @@ button, input{ font: inherit; }
     }
   
     /* 2) Equal left/right padding (safe-area aware) */
+    :root{
+      --mPad: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+    }
+  
     .topbar,
     .hero,
     .footer {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 auto !important;
-      padding-left: max(16px, env(safe-area-inset-left)) !important;
-      padding-right: max(16px, env(safe-area-inset-right)) !important;
+      padding-left: var(--mPad) !important;
+      padding-right: var(--mPad) !important;
     }
   
     /* 3) Remove extra “layers/shadows” on mobile (these cause off-right feel) */
@@ -651,7 +652,8 @@ button, input{ font: inherit; }
     }
   
     /* 5) CTA panel: centered dark layer ONLY */
-    .ctaPanel,
+/* Keep CTA panel centered inside that equal padding */
+.ctaPanel,
 .ctaPanelTop {
   width: 100% !important;
   max-width: 520px !important;
@@ -728,5 +730,7 @@ button, input{ font: inherit; }
       height: 320px !important;
       margin: 10px auto 0 !important;
     }
+    .topbar { padding-top: 14px !important; }  /* was 18px */
+  .hero   { padding-top: 18px !important; }  /* was 26px */
   }
   
