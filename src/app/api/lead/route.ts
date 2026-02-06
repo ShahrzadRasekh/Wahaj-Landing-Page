@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     // 2) Env check (THIS is the #1 cause of random 500s)
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     const NOTIFY_TO_EMAIL = process.env.NOTIFY_TO_EMAIL;
-    const FROM_EMAIL = process.env.FROM_EMAIL || "Wahaj <onboarding@resend.dev>";
+    const FROM_EMAIL = process.env.FROM_EMAIL || "Wahaj Gold <info@wahajgold.com>";
 
     if (!RESEND_API_KEY || !NOTIFY_TO_EMAIL) {
       console.error("MISSING_ENV", {
@@ -43,12 +43,14 @@ export async function POST(req: Request) {
     const adminResult = await resend.emails.send({
       from: FROM_EMAIL,
       to: NOTIFY_TO_EMAIL,
+      replyTo: cleanEmail,
       subject: "New Wahaj Launch Signup",
       html: `
         <h2>New email signup</h2>
         <p><strong>Email:</strong> ${cleanEmail}</p>
       `,
     });
+    
 
     if ((adminResult as any)?.error) {
       console.error("RESEND_ADMIN_ERROR", (adminResult as any).error);
