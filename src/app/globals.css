@@ -726,3 +726,83 @@ button, input{ font: inherit; }
     margin: 10px auto 0 !important;
   }
 }
+
+/* Arabic RTL support */
+[dir="rtl"] .contactLink{
+  margin-left: 0;
+  margin-right: 6px;
+}
+/* ===========================
+   Arabic RTL fixes
+   =========================== */
+   [dir="rtl"] .rtlMeta{
+    direction: rtl;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  [dir="rtl"] .rtlLabel{
+    opacity: .9;
+  }
+  
+  [dir="rtl"] .metaSep{
+    opacity: .45;
+    margin: 0 2px;
+  }
+  
+  [dir="rtl"] .ltrEmail{
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  
+  /* Optional: keep pills visually consistent in RTL */
+  [dir="rtl"] .contactLink{
+    unicode-bidi: isolate;
+  }
+  
+  [dir="rtl"] .ctaTitle{
+    letter-spacing: 0 !important;
+  }
+  
+  /* ===========================
+   Arabic text alignment fixes
+   =========================== */
+.rtlPage .copyGroup,
+.rtlPage .copyP,
+.rtlPage .ctaTitle,
+.rtlPage .ctaMeta {
+  text-align: right !important;
+}
+
+/* Keep the overall block centered, but text inside starts from right */
+.rtlPage .heroLeft {
+  text-align: right !important;
+}
+
+/* IMPORTANT: undo the global "center everything" rule for Arabic page only */
+.rtlPage .heroLeft * {
+  text-align: inherit !important;
+}
+
+/* Optional: better Arabic paragraph flow */
+.rtlPage .copyP {
+  direction: rtl;
+  unicode-bidi: plaintext;
+  line-height: 1.9;
+}
+
+/* Center the "قريباً" label */
+.rtlPage .launchingTopCenter {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+}
+
+/* Email input should behave LTR even on Arabic page */
+.rtlPage .input {
+  direction: ltr;
+  text-align: left !important;
+}

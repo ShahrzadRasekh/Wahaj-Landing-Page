@@ -20,33 +20,7 @@ function useScrollVars() {
   }, []);
 }
 
-/** ✅ Reliable mobile detection (prevents “double stacks” forever) */
-function useIsMobile(breakpointPx = 640) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
-    const update = () => setIsMobile(mq.matches);
-
-    update();
-    // Safari compatibility: addEventListener may not exist in older versions
-    if (mq.addEventListener) mq.addEventListener("change", update);
-    else mq.addListener(update);
-
-    return () => {
-      if (mq.removeEventListener) mq.removeEventListener("change", update);
-      else mq.removeListener(update);
-    };
-  }, [breakpointPx]);
-
-  return isMobile;
-}
-
-export default function Page() {
-  const isMobile = useIsMobile(640);
-
+export default function ArabicPage() {
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,8 +39,6 @@ export default function Page() {
 
   // Desktop parallax only
   useEffect(() => {
-    if (isMobile) return; // ✅ never run parallax on mobile
-
     const el = stageRefDesktop.current;
     if (!el) return;
 
@@ -106,12 +78,10 @@ export default function Page() {
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);
     };
-  }, [isMobile]);
+  }, []);
 
-  // Background mouse trail (desktop only - optional)
+  // Background mouse trail
   useEffect(() => {
-    if (isMobile) return;
-
     const wrap = trailRef.current;
     if (!wrap) return;
 
@@ -156,7 +126,7 @@ export default function Page() {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
     };
-  }, [isMobile]);
+  }, []);
 
   function showToast(msg: string) {
     setToast(msg);
@@ -170,7 +140,7 @@ export default function Page() {
 
     const trimmed = email.trim().toLowerCase();
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-    if (!ok) return showToast("Please enter a valid email address.");
+    if (!ok) return showToast("يرجى إدخال بريد إلكتروني صحيح.");
 
     setIsSubmitting(true);
 
@@ -186,16 +156,16 @@ export default function Page() {
       if (!res.ok || !data?.ok) {
         showToast(
           data?.error === "MISSING_ENV"
-            ? "Server setup error: missing environment variables."
-            : "Something went wrong. Please try again."
+            ? "مشكلة في إعدادات الخادم: متغيرات البيئة غير موجودة."
+            : "حدث خطأ. يرجى المحاولة مرة أخرى."
         );
         return;
       }
 
       setEmail("");
-      showToast("You’re on the list. We’ll notify you at launch.");
+      showToast("تمت إضافتك للقائمة. سنخبرك عند الإطلاق.");
     } catch {
-      showToast("Network error. Please try again.");
+      showToast("مشكلة في الاتصال. حاول مرة أخرى.");
     } finally {
       setIsSubmitting(false);
     }
@@ -209,51 +179,25 @@ export default function Page() {
     stageRef?: React.RefObject<HTMLDivElement | null>;
   }) => {
     const stageClass =
-      mode === "desktop"
-        ? "productStage productStageDesktop"
-        : "productStage productStageMobile";
+      mode === "desktop" ? "productStage productStageDesktop" : "productStage productStageMobile";
     const stackClass =
-      mode === "desktop"
-        ? "layerStack layerStackDesktop"
-        : "layerStack layerStackMobile";
+      mode === "desktop" ? "layerStack layerStackDesktop" : "layerStack layerStackMobile";
 
     return (
       <div className={stageClass} ref={stageRef}>
-        {/* these are visually removed on mobile by CSS */}
         <div className="productHalo" />
         <div className="productSweep" />
         <div className="productParticles" />
 
         <div className={stackClass}>
           <div className="layer l3">
-            <Image
-              src="/wahaj3.png"
-              alt=""
-              fill
-              sizes="(max-width: 980px) 320px, 440px"
-              className="layerImg"
-              priority
-            />
+            <Image src="/wahaj3.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
           </div>
           <div className="layer l2">
-            <Image
-              src="/wahaj2.png"
-              alt=""
-              fill
-              sizes="(max-width: 980px) 320px, 440px"
-              className="layerImg"
-              priority
-            />
+            <Image src="/wahaj2.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
           </div>
           <div className="layer l1">
-            <Image
-              src="/wahaj1.png"
-              alt=""
-              fill
-              sizes="(max-width: 980px) 320px, 440px"
-              className="layerImg"
-              priority
-            />
+            <Image src="/wahaj1.png" alt="" fill sizes="(max-width: 980px) 320px, 440px" className="layerImg" priority />
           </div>
         </div>
       </div>
@@ -261,7 +205,8 @@ export default function Page() {
   };
 
   return (
-    <main className="page">
+    <main className="page rtlPage" dir="rtl">
+
       <div className="scrollProgress" aria-hidden="true">
         <div className="scrollProgressBar" />
       </div>
@@ -273,68 +218,57 @@ export default function Page() {
         <div className="bgGrain" />
       </div>
 
-      {/* Trail is desktop only now (safe) */}
-      {!isMobile && <div ref={trailRef} className="trailLayer" aria-hidden="true" />}
+      <div ref={trailRef} className="trailLayer" aria-hidden="true" />
 
       <header className="topbar topbarSimple">
         <div className="brand introLine">
-          <Image
-            src="/WahajLogo.png"
-            alt="Wahaj"
-            width={220}
-            height={220}
-            priority
-            className="logoNoBox"
-          />
+          <Image src="/WahajLogo.png" alt="Wahaj" width={220} height={220} priority className="logoNoBox" />
         </div>
       </header>
 
       <section className="hero">
         <div className="heroShell heroShellNoBorder">
+          <div style={{ textAlign: "center", marginBottom: 10 }}>
+            <a className="contactLink" href="/" style={{ marginInlineEnd: 8 }}>English</a>
+            </div>
 
-        <div style={{ textAlign: "center", marginBottom: 10 }}>
-    <a className="contactLink" href="/ar" style={{ marginInlineStart: 8 }}>
-    العربية
-  </a>
-</div>
           <div className="heroGrid">
             <div className="heroLeft">
-              <div className="launchingTopCenter introLine introDelay1">LAUNCHING SOON</div>
+              <div className="launchingTopCenter introLine introDelay1">قريباً</div>
 
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
-                <div className="ctaTitle">Be notified when Wahaj launches.</div>
+                <div className="ctaTitle">أبلغني عند إطلاق وهج.</div>
 
                 <form className="notify" onSubmit={onSubmit}>
                   <input
                     className="input"
-                    placeholder="Enter your email"
+                    placeholder="أدخل بريدك الإلكتروني"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
                     disabled={isSubmitting}
                   />
                   <button className="primaryBtn" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Saving..." : "Get Notified"}
+                    {isSubmitting ? "جارٍ الحفظ..." : "أبلغني"}
                   </button>
                 </form>
 
-                <div className="ctaMeta">
-  Or contact us:
-  {" "}
-  <a className="contactLink" href="mailto:info@wahajgold.com">
+                <div className="ctaMeta rtlMeta">
+  <span className="rtlLabel">للتواصل:</span>
+
+  <a className="contactLink ltrEmail" href="mailto:info@wahajgold.com" dir="ltr">
     info@wahajgold.com
   </a>
 
-  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
+  <span className="metaSep" aria-hidden="true">|</span>
 
   <a
     className="contactLink"
     href="https://wa.me/9647767777200"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="WhatsApp +964 7767777200"
   >
-    WhatsApp 1
+    واتساب 1
   </a>
 
   <a
@@ -342,41 +276,33 @@ export default function Page() {
     href="https://wa.me/9647787777200"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="WhatsApp +964 7787777200"
   >
-    WhatsApp 2
+    واتساب 2
   </a>
-   </div>
+</div>
+
               </div>
 
-              {/* ✅ Render the product stack only ONCE on mobile */}
-              {isMobile && (
-                <div aria-hidden="true" id="mobileImages" style={{ width: "100%" }}>
-                  <ProductStack mode="mobile" />
-                </div>
-              )}
+              <div className="mobileOnlyProduct" aria-hidden="true" id="mobileImages">
+                <ProductStack mode="mobile" />
+              </div>
 
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
-                  A new platform for buying{" "}
-                  <span className="accentInline">certified physical gold and silver</span>, built on transparency,
-                  responsible sourcing, and secure delivery.
+                  منصة جديدة لشراء <span className="accentInline">الذهب والفضة المادية المعتمدة</span>،
+                  مبنية على الشفافية، التوريد المسؤول، والتسليم الآمن.
                 </p>
 
                 <p className="copyP">
-                  Designed for investors and buyers who value{" "}
-                  <span className="shinyWord">trust</span>, <span className="shinyWord">quality</span>, and{" "}
-                  <span className="shinyWord">clarity</span>.
+                  مصممة للمستثمرين والمشترين الذين يقدّرون <span className="shinyWord">الثقة</span>،
+                  <span className="shinyWord"> الجودة</span>، و<span className="shinyWord"> الوضوح</span>.
                 </p>
               </div>
             </div>
 
-            {/* ✅ Render the product stack only ONCE on desktop */}
-            {!isMobile && (
-              <div className="heroRight" aria-hidden="true">
-                <ProductStack mode="desktop" stageRef={stageRefDesktop} />
-              </div>
-            )}
+            <div className="heroRight desktopOnlyProduct" aria-hidden="true">
+              <ProductStack mode="desktop" stageRef={stageRefDesktop} />
+            </div>
           </div>
 
           <div className="scrollHint" aria-hidden="true">
