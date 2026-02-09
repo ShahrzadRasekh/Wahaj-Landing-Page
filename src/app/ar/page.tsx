@@ -234,10 +234,10 @@ export default function ArabicPage() {
 
           <div className="heroGrid">
             <div className="heroLeft">
-              <div className="launchingTopCenter introLine introDelay1">قريباً</div>
+              <div className="launchingTopCenter introLine introDelay1">قريبًا الإطلاق</div>
 
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
-                <div className="ctaTitle">أبلغني عند إطلاق وهج.</div>
+                <div className="ctaTitle">كن على اطلاع عند إطلاق وهّاج </div>
 
                 <form className="notify" onSubmit={onSubmit}>
                   <input
@@ -249,38 +249,26 @@ export default function ArabicPage() {
                     disabled={isSubmitting}
                   />
                   <button className="primaryBtn" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "جارٍ الحفظ..." : "أبلغني"}
+                    {isSubmitting ? "جارٍ الحفظ..." : "إرسال"}
                   </button>
                 </form>
 
                 <div className="ctaMeta rtlMeta">
-  <span className="rtlLabel">للتواصل:</span>
+  <span className="rtlLabel">أو تواصل:</span>
 
   <a className="contactLink ltrEmail" href="mailto:info@wahajgold.com" dir="ltr">
     info@wahajgold.com
   </a>
+  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
 
-  <span className="metaSep" aria-hidden="true">|</span>
-
-  <a
-    className="contactLink"
-    href="https://wa.me/9647767777200"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    واتساب 1
+  <a className="contactLink" href="tel:+9647767777200" dir="ltr">
+    +964 776 777 7200
   </a>
 
-  <a
-    className="contactLink"
-    href="https://wa.me/9647787777200"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    واتساب 2
+    <a className="contactLink" href="tel:+9647787777200" dir="ltr">
+    +964 778 777 7200
   </a>
 </div>
-
               </div>
 
               <div className="mobileOnlyProduct" aria-hidden="true" id="mobileImages">
@@ -289,12 +277,12 @@ export default function ArabicPage() {
 
               <div className="copyGroup introLine introDelay2">
                 <p className="copyP">
-                  منصة جديدة لشراء <span className="accentInline">الذهب والفضة المادية المعتمدة</span>،
-                  مبنية على الشفافية، التوريد المسؤول، والتسليم الآمن.
+                منصة جديدة لشراء <span className="accentInline">الذهب والفضة المادية المعتمدة</span>،
+                مبنية على الشفافية، والالتزام بالمصادر المسؤولة، والتوصيل الآمن
                 </p>
 
                 <p className="copyP">
-                  مصممة للمستثمرين والمشترين الذين يقدّرون <span className="shinyWord">الثقة</span>،
+                مصممة للمستثمرين والمشترين الذين يقدّرون <span className="shinyWord">الثقة</span>،
                   <span className="shinyWord"> الجودة</span>، و<span className="shinyWord"> الوضوح</span>.
                 </p>
               </div>
@@ -316,6 +304,20 @@ export default function ArabicPage() {
           {toast}
         </div>
       )}
+      <a
+  href="https://wa.me/9647767777200"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+  className="whatsappFloat whatsappFloatLeft"
+>
+  <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M19.11 17.19c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.15-1.34-.79-.7-1.32-1.56-1.48-1.83-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.35.98 2.65 1.12 2.83.14.18 1.93 2.95 4.67 4.13.65.28 1.15.45 1.54.57.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.82-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM16.04 3C9.39 3 4 8.38 4 15.01c0 2.63.86 5.05 2.32 7.01L4 29l7.17-2.28a11.94 11.94 0 004.87 1.03h.01c6.65 0 12.04-5.38 12.04-12.01C28.09 8.38 22.7 3 16.04 3z"
+    />
+  </svg>
+</a>
     </main>
   );
 }

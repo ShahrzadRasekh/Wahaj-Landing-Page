@@ -806,3 +806,216 @@ button, input{ font: inherit; }
   direction: ltr;
   text-align: left !important;
 }
+.rtlPage .input::placeholder {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Arabic typography polish */
+.rtlPage {
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+.rtlPage .copyP {
+  letter-spacing: 0;
+  line-height: 1.9;
+}
+
+.rtlPage .ctaTitle {
+  line-height: 1.6;
+}
+
+.rtlPage .launchingTopCenter {
+  text-align: center;
+}
+
+.whatsappFloat {
+  position: fixed;
+  bottom: 22px;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  color: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover */
+.whatsappFloat:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* English (LTR) → bottom right */
+html[dir="ltr"] .whatsappFloat {
+  right: 22px;
+}
+
+/* Arabic (RTL) → bottom left */
+html[dir="rtl"] .whatsappFloat {
+  left: 22px;
+}
+
+/* Mobile polish */
+@media (max-width: 640px) {
+  .whatsappFloat {
+    width: 52px;
+    height: 52px;
+    bottom: 16px;
+  }
+}
+
+.whatsappFloat{
+  position: fixed;
+  right: 22px;            /* ALWAYS bottom-right */
+  bottom: 22px;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.whatsappFloat:hover{
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+}
+
+@media (max-width: 640px){
+  .whatsappFloat{
+    width: 52px;
+    height: 52px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+.whatsappFloat{
+  position: fixed;
+  bottom: 22px;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* English page (default) → bottom-right */
+.whatsappFloat{
+  right: 22px;
+}
+
+/* Arabic page → bottom-left */
+.page[dir="rtl"] .whatsappFloat{
+  right: auto;
+  left: 22px;
+}
+
+.whatsappFloat:hover{
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+}
+
+@media (max-width: 640px){
+  .whatsappFloat{
+    width: 52px;
+    height: 52px;
+    bottom: 16px;
+  }
+
+  .whatsappFloat{
+    right: 16px;
+  }
+
+  .page[dir="rtl"] .whatsappFloat{
+    left: 16px;
+    right: auto;
+  }
+}
+
+/* WhatsApp Floating Button */
+.whatsappFloat{
+  position: fixed;
+  bottom: 22px;
+  right: 22px;               /* default: English bottom-right */
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 2147483647;       /* ultra-safe top layer */
+  box-shadow: 0 10px 25px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease;
+  will-change: transform;
+  isolation: isolate;        /* prevents weird stacking issues */
+}
+
+/* Arabic page: bottom-left */
+.whatsappFloatLeft{
+  right: auto !important;
+  left: 22px !important;
+}
+
+/* Hover */
+.whatsappFloat:hover{
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+}
+
+/* Pulse Animation */
+.whatsappFloat::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius: 999px;
+  background: rgba(37, 211, 102, .22);
+  transform: scale(.7);
+  opacity: 0;
+  animation: waPulse 1.9s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes waPulse{
+  0%   { transform: scale(.75); opacity: .75; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* Mobile sizing + safe-area */
+@media (max-width: 640px){
+  .whatsappFloat{
+    width: 52px;
+    height: 52px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    right: max(16px, env(safe-area-inset-right));
+  }
+  .whatsappFloatLeft{
+    left: max(16px, env(safe-area-inset-left)) !important;
+    right: auto !important;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .whatsappFloat,
+  .whatsappFloat::after{
+    animation: none !important;
+    transition: none !important;
+  }
+}

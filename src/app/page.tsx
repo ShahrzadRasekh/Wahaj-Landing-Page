@@ -58,6 +58,25 @@ export default function Page() {
   useScrollVars();
 
   useEffect(() => {
+    try {
+      // If user already chose a language, don't auto-redirect
+      const savedLang = window.localStorage.getItem("lang");
+      if (savedLang) return;
+  
+      const lang = (navigator.language || "").toLowerCase();
+  
+      // Arabic browser → redirect to /ar
+      if (lang.startsWith("ar")) {
+        window.localStorage.setItem("lang", "ar");
+        window.location.replace("/ar");
+      }
+    } catch {
+      // If localStorage is blocked, do nothing (never break the page)
+    }
+  }, []);
+  
+
+  useEffect(() => {
     return () => {
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
     };
@@ -319,33 +338,26 @@ export default function Page() {
                 </form>
 
                 <div className="ctaMeta">
-  Or contact us:
-  {" "}
+ 
+  <div className="ctaMeta">
+  Or contact us:{" "}
   <a className="contactLink" href="mailto:info@wahajgold.com">
     info@wahajgold.com
   </a>
 
   <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
 
-  <a
-    className="contactLink"
-    href="https://wa.me/9647767777200"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="WhatsApp +964 7767777200"
-  >
-    WhatsApp 1
+  <a className="contactLink" href="tel:+9647767777200">
+    +964 776 777 7200
   </a>
 
-  <a
-    className="contactLink"
-    href="https://wa.me/9647787777200"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="WhatsApp +964 7787777200"
-  >
-    WhatsApp 2
+  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
+
+  <a className="contactLink" href="tel:+9647787777200">
+    +964 778 777 7200
   </a>
+</div>
+
    </div>
               </div>
 
@@ -390,6 +402,28 @@ export default function Page() {
           {toast}
         </div>
       )}
+<a
+  href="https://wa.me/9647767777200"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+  className="whatsappFloat"
+>
+  <svg
+    viewBox="0 0 32 32"
+    width="26"
+    height="26"
+    aria-hidden="true"
+  >
+    <path
+      fill="currentColor"
+      d="M19.11 17.19c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.15-1.34-.79-.7-1.32-1.56-1.48-1.83-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.35.98 2.65 1.12 2.83.14.18 1.93 2.95 4.67 4.13.65.28 1.15.45 1.54.57.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.82-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM16.04 3C9.39 3 4 8.38 4 15.01c0 2.63.86 5.05 2.32 7.01L4 29l7.17-2.28a11.94 11.94 0 004.87 1.03h.01c6.65 0 12.04-5.38 12.04-12.01C28.09 8.38 22.7 3 16.04 3z"
+    />
+  </svg>
+</a>
+
     </main>
+    
   );
 }
+
