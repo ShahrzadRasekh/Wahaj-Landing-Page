@@ -1092,3 +1092,10 @@ html[dir="rtl"] .whatsappFloat {
       margin-top: 22px;
     }
   }
+
+  /* Mobile: pull product images upward slightly */
+@media (max-width: 640px) {
+  .mobileOnlyProduct {
+    margin-top: -18px;
+  }
+}
