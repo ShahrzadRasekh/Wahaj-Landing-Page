@@ -1019,3 +1019,71 @@ html[dir="rtl"] .whatsappFloat {
     transition: none !important;
   }
 }
+
+/* =========================
+   MOBILE: keep contact row tidy (no awkward number wrapping)
+   ========================= */
+   @media (max-width: 640px){
+
+    /* The row that contains: Or email us / info / phone1 / phone2 */
+    .ctaMeta{
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px 10px !important;          /* row-gap / col-gap */
+      line-height: 1.25 !important;
+    }
+  
+    /* Make each chip behave like a compact pill */
+    .ctaMeta .contactLink,
+    .ctaMeta a{
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      white-space: nowrap !important;     /* prevents breaking inside numbers */
+      max-width: 100% !important;
+    }
+  
+    /* If you used separate phone chips class, keep them unbreakable too */
+    .phoneChip{
+      white-space: nowrap !important;
+    }
+  
+    /* If you still see overflow on tiny screens, slightly reduce chip text size */
+    .ctaMeta{
+      font-size: 13px !important;
+    }
+  }
+
+/* 1️⃣ Center Arabic CTA title */
+[dir="rtl"] .ctaTitle{
+  text-align: center !important;
+}
+
+/* 2️⃣ Center email input text + placeholder */
+[dir="rtl"] .notify .input{
+  text-align: center !important;
+}
+
+[dir="rtl"] .notify .input::placeholder{
+  text-align: center !important;
+}
+
+/* 3️⃣ Center submit button text (إرسال) */
+[dir="rtl"] .primaryBtn{
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding-inline: 18px !important;
+}
+
+
+  @media (max-width: 380px){
+    .ctaMeta{
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+  }
+  

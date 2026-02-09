@@ -254,12 +254,11 @@ export default function ArabicPage() {
                 </form>
 
                 <div className="ctaMeta rtlMeta">
-  <span className="rtlLabel">أو تواصل:</span>
+  <span className="rtlLabel"> أو تواصل معنا :</span>
 
   <a className="contactLink ltrEmail" href="mailto:info@wahajgold.com" dir="ltr">
     info@wahajgold.com
   </a>
-  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
 
   <a className="contactLink" href="tel:+9647767777200" dir="ltr">
     +964 776 777 7200

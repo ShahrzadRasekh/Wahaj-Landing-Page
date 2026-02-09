@@ -345,15 +345,11 @@ export default function Page() {
     info@wahajgold.com
   </a>
 
-  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
-
   <a className="contactLink" href="tel:+9647767777200">
     +964 776 777 7200
   </a>
 
-  <span style={{ margin: "0 8px", opacity: 0.5 }}>|</span>
-
-  <a className="contactLink" href="tel:+9647787777200">
+   <a className="contactLink" href="tel:+9647787777200">
     +964 778 777 7200
   </a>
 </div>
