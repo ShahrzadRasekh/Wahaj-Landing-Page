@@ -234,10 +234,10 @@ export default function ArabicPage() {
 
           <div className="heroGrid">
             <div className="heroLeft">
-              <div className="launchingTopCenter introLine introDelay1">قريبًا الإطلاق</div>
+              <div className="launchingTopCenter introLine introDelay1">ترقبوا الافتتاح</div>
 
               <div className="ctaPanel ctaPanelTop introLine introDelay2" id="notify">
-                <div className="ctaTitle">كن على اطلاع عند إطلاق وهّاج </div>
+                <div className="ctaTitle">كن على اطلاع عند افتتاح وهج </div>
 
                 <form className="notify" onSubmit={onSubmit}>
                   <input
